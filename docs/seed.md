@@ -39,8 +39,7 @@ This phase prepares the new T3 project and configures all necessary services and
 - **Secrets to Add:**
   - `DATABASE_URL` (from Neon)
   - `DATABASE_URL_UNPOOLED` (from Neon)
-  - `CLOUDFLARE_API_TOKEN`
-  - `CLOUDFLARE_ACCOUNT_ID`
+  - 'UPLOADTHING_TOKEN`
   - `RESEND_API_KEY`
   - `RESEND_FROM_EMAIL`
   - `WEB3FORMS_ACCESS_KEY` = "f73f7250-5451-499f-8e96-5669baece62c"
@@ -145,11 +144,11 @@ This phase focuses on building a fully responsive user interface using `shadcn/u
 
 This phase implements the complex workflows for file handling and immersive experiences.
 
-### **4.1: Cloudflare R2 Integration**
+### **4.1: UploadThing Integration**
 
-- **Action:** Use the AWS S3 SDK to interact with R2.
-- **Buckets:** Create two buckets: **`barnlabs-models`** and **`barnlabs-dashboard-assets`**.
-- **Uploads:** Implement a multipart upload flow with a **500 MB** max file size and a **10 MB** threshold.
+- **Action:** Use UploadThing for storage and upload handling. Follow the [UploadThing docs](https://docs.uploadthing.com/) to configure server routes and client utilities.
+- **Server:** Define file routes with validators (MIME/size), protected endpoints for authenticated users, and callbacks to persist metadata in Prisma (`Model`, `DashboardAsset`).
+- **Limits:** Support up to **500 MB** per file and a **10 MB** chunk threshold.
 
 ### **4.2: 3D/AR/VR Pipeline**
 

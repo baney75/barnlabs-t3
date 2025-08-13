@@ -26,6 +26,8 @@ export const env = createEnv({
     RESEND_FROM_EMAIL: z.string().optional(),
     // Uploads (UploadThing)
     UPLOADTHING_TOKEN: z.string().optional(),
+    // Web3Forms contact form
+    WEB3FORMS_ACCESS_KEY: z.string().optional(),
     // URLs
     PUB_URL: z.string().optional(),
     AUTH_URL: z.string().optional(),
@@ -55,6 +57,7 @@ export const env = createEnv({
     RESEND_API_KEY: process.env.RESEND_API_KEY,
     RESEND_FROM_EMAIL: process.env.RESEND_FROM_EMAIL,
     UPLOADTHING_TOKEN: process.env.UPLOADTHING_TOKEN,
+    WEB3FORMS_ACCESS_KEY: process.env.WEB3FORMS_ACCESS_KEY,
     PUB_URL: process.env.PUB_URL,
     AUTH_URL: process.env.AUTH_URL,
     NODE_ENV: process.env.NODE_ENV,
