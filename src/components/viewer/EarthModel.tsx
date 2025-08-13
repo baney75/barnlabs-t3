@@ -1,11 +1,14 @@
 "use client";
-import { useRef } from "react";
+import * as React from "react";
+import { useRef, Suspense } from "react";
 import { useFrame } from "@react-three/fiber";
+import { useGLTF } from "@react-three/drei";
 import { type Group } from "three";
 
-export default function EarthModel(
-  props: React.JSX.IntrinsicElements["group"],
-) {
+const EARTH_GLB_URL =
+  "https://t3rgh6yjwx.ufs.sh/f/DGcq4LQh6E89nUUTez3rgOax2BzGHqujDRtWQswvYCIVlfkK";
+
+function EarthFallback(props: React.JSX.IntrinsicElements["group"]) {
   const group = useRef<Group>(null);
   useFrame((_, delta) => {
     if (group.current) group.current.rotation.y += delta * 0.2;
@@ -17,5 +20,36 @@ export default function EarthModel(
         <meshStandardMaterial color="#1e90ff" metalness={0.2} roughness={0.5} />
       </mesh>
     </group>
+  );
+}
+
+function EarthGLB() {
+  const gltf = useGLTF(EARTH_GLB_URL);
+  return <primitive object={gltf.scene} />;
+}
+
+class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean }> {
+  constructor(props: { children: React.ReactNode }) {
+    super(props);
+    this.state = { hasError: false };
+  }
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+  render() {
+    if (this.state.hasError) return null;
+    return this.props.children;
+  }
+}
+
+export default function EarthModel(props: React.JSX.IntrinsicElements["group"]) {
+  return (
+    <ErrorBoundary>
+      <Suspense fallback={<EarthFallback {...props} />}> 
+        <group {...props}>
+          <EarthGLB />
+        </group>
+      </Suspense>
+    </ErrorBoundary>
   );
 }
