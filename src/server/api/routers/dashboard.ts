@@ -1,16 +1,16 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
 export const dashboardRouter = createTRPCRouter({
-  getMine: protectedProcedure.query(async ({ ctx }: { ctx: any }) => {
+  getMine: protectedProcedure.query(async ({ ctx }) => {
     let doc = await ctx.db.dashboard.findFirst({
-      where: { ownerId: ctx.session!.user.id },
+      where: { ownerId: ctx.session.user.id },
     });
     if (!doc) {
       doc = await ctx.db.dashboard.create({
         data: {
-          ownerId: ctx.session!.user.id,
+          ownerId: ctx.session.user.id,
           content: {
             cards: [
               {
@@ -43,11 +43,19 @@ export const dashboardRouter = createTRPCRouter({
 
   save: protectedProcedure
     .input(z.object({ content: z.any() }))
-    .mutation(async ({ ctx, input }: { ctx: any; input: any }) => {
-      const updated = await ctx.db.dashboard.upsert({
-        where: { ownerId: ctx.session!.user.id },
-        create: { ownerId: ctx.session!.user.id, content: input.content },
-        update: { content: input.content },
+    .mutation(async ({ ctx, input }) => {
+      const existing = await ctx.db.dashboard.findFirst({
+        where: { ownerId: ctx.session.user.id },
+      });
+      if (!existing) {
+        const created = await ctx.db.dashboard.create({
+          data: { ownerId: ctx.session.user.id, content: input.content },
+        });
+        return created;
+      }
+      const updated = await ctx.db.dashboard.update({
+        where: { id: existing.id },
+        data: { content: input.content },
       });
       return updated;
     }),

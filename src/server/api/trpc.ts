@@ -124,13 +124,12 @@ export const publicProcedure = t.procedure.use(timingMiddleware);
  */
 export const protectedProcedure = t.procedure
   .use(timingMiddleware)
-  .use(({ ctx, next }: { ctx: any; next: any }) => {
+  .use(({ ctx, next }) => {
     if (!ctx.session?.user) {
       throw new TRPCError({ code: "UNAUTHORIZED" });
     }
     return next({
       ctx: {
-        // infers the `session` as non-nullable
         session: { ...ctx.session, user: ctx.session.user },
       },
     });
@@ -141,12 +140,19 @@ export const protectedProcedure = t.procedure
  *
  * Ensures the session exists and the user has an ADMIN role.
  */
-export const adminProcedure = protectedProcedure.use(
-  ({ ctx, next }: { ctx: any; next: any }) => {
-    const isAdmin = ctx.session.user?.role === "ADMIN";
-    if (!isAdmin) {
-      throw new TRPCError({ code: "FORBIDDEN" });
-    }
-    return next();
-  },
-);
+export const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
+  const isAdmin = ctx.session.user?.role === "ADMIN";
+  if (!isAdmin) {
+    throw new TRPCError({ code: "FORBIDDEN" });
+  }
+  return next();
+});
+
+export const employeeProcedure = protectedProcedure.use(({ ctx, next }) => {
+  const isEmployee =
+    ctx.session.user?.role === "EMPLOYEE" || ctx.session.user?.role === "ADMIN";
+  if (!isEmployee) {
+    throw new TRPCError({ code: "FORBIDDEN" });
+  }
+  return next();
+});

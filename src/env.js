@@ -31,6 +31,7 @@ export const env = createEnv({
     // URLs
     PUB_URL: z.string().optional(),
     AUTH_URL: z.string().optional(),
+    NEXTAUTH_URL: z.string().url(),
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
@@ -60,6 +61,7 @@ export const env = createEnv({
     WEB3FORMS_ACCESS_KEY: process.env.WEB3FORMS_ACCESS_KEY,
     PUB_URL: process.env.PUB_URL,
     AUTH_URL: process.env.AUTH_URL,
+    NEXTAUTH_URL: process.env.NEXTAUTH_URL,
     NODE_ENV: process.env.NODE_ENV,
   },
   /**
