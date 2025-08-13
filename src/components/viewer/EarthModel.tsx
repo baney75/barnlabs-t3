@@ -8,7 +8,9 @@ export default function EarthModel(
   props: React.JSX.IntrinsicElements["group"],
 ) {
   const group = useRef<Group>(null);
-  const gltf = useGLTF("/dean_richmond.glb?v=1");
+  const gltf = useGLTF(
+    "https://t3rgh6yjwx.ufs.sh/f/DGcq4LQh6E89Co1yGNeldY0T6O4ZvbiLtsrpqA9PuzUwVMmx",
+  );
   useFrame((_, delta) => {
     if (group.current) group.current.rotation.y += delta * 0.2;
   });
@@ -20,4 +22,6 @@ export default function EarthModel(
   );
 }
 
-useGLTF.preload("/dean_richmond.glb?v=1");
+useGLTF.preload(
+  "https://t3rgh6yjwx.ufs.sh/f/DGcq4LQh6E89Co1yGNeldY0T6O4ZvbiLtsrpqA9PuzUwVMmx",
+);

@@ -46,19 +46,19 @@ export default async function Home({
             <div className="mt-3 flex flex-wrap gap-2">
               <a
                 rel="ar"
-                href="/dean_richmond.usdz?v=1"
+                href="https://t3rgh6yjwx.ufs.sh/f/DGcq4LQh6E89hu2KiSpvRJ2ubg0iEeqLh6flO9Pm5STDWYaB"
                 className="rounded-md bg-white px-3 py-1 text-sm text-black"
               >
                 View in AR (iOS)
               </a>
               <a
-                href={`intent://arvr.google.com/scene-viewer/1.0?file=${encodeURIComponent("/dean_richmond.glb")}#Intent;scheme=https;package=com.google.android.googlequicksearchbox;action=android.intent.action.VIEW;S.browser_fallback_url=${encodeURIComponent("/dean_richmond.glb")};end;`}
+                href={`intent://arvr.google.com/scene-viewer/1.0?file=${encodeURIComponent("https://t3rgh6yjwx.ufs.sh/f/DGcq4LQh6E89Co1yGNeldY0T6O4ZvbiLtsrpqA9PuzUwVMmx")}#Intent;scheme=https;package=com.google.android.googlequicksearchbox;action=android.intent.action.VIEW;S.browser_fallback_url=${encodeURIComponent("https://t3rgh6yjwx.ufs.sh/f/DGcq4LQh6E89Co1yGNeldY0T6O4ZvbiLtsrpqA9PuzUwVMmx")};end;`}
                 className="rounded-md bg-white px-3 py-1 text-sm text-black"
               >
                 View in AR (Android)
               </a>
               <a
-                href={`/vr360.html?src=${encodeURIComponent("/dean_richmond.glb?v=1")}`}
+                href={`/vr360.html?src=${encodeURIComponent("https://t3rgh6yjwx.ufs.sh/f/DGcq4LQh6E89Co1yGNeldY0T6O4ZvbiLtsrpqA9PuzUwVMmx")}`}
                 target="_blank"
                 className="rounded-md bg-white px-3 py-1 text-sm text-black"
               >
