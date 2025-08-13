@@ -83,6 +83,23 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  /* BarnLabs palette tokens */
+  --color-header-bg: #9a631c;
+  --color-header-text: #e7e9dc;
+  --color-hero-bg: #183b4e;
+  --color-hero-text: #e7e9dc;
+  --color-goals-bg: #9a631c;
+  --color-features-bg: #d3b587;
+  --color-feature-card-bg: #8c5a1a;
+  --color-feature-text: #ffffff;
+  --color-feature-icon: #af9772;
+  --color-contact-bg: #c0a57c;
+  --color-contact-form-bg: #7f5218;
+  --color-contact-text: #d3ceba;
+  --color-contact-input-text: #e7e9dc;
+  --color-contact-button-bg: #d3b587;
+  --color-divider-bg: #183b4e;
 }
 
 .dark {

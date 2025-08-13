@@ -30,8 +30,8 @@ This phase prepares the new T3 project and configures all necessary services and
 - **Action:** Create a new public GitHub repository and push the initial project.
 - **Repository Name:** `barnlabs-t3`
 - **Steps:**
-  1.  Create a new public repository on GitHub named **`barnlabs-t3`**.
-  2.  Connect the local project to the new remote repository and push the initial commit.
+  1. Create a new public repository on GitHub named **`barnlabs-t3`**.
+  2. Connect the local project to the new remote repository and push the initial commit.
 
 ### **1.3: Configure Environment Variables**
 

@@ -24,7 +24,7 @@ export default function ModelViewer({ src, usdz, title }: { src: string; usdz?: 
           <OrbitControls enablePan={false} />
         </Canvas>
       </div>
-      <div className="flex gap-2">
+      <div className="flex flex-wrap gap-2">
         {usdz && (
           <a
             rel="ar"
@@ -41,9 +41,13 @@ export default function ModelViewer({ src, usdz, title }: { src: string; usdz?: 
         >
           Download GLB
         </a>
-        <button className="rounded-md bg-white px-3 py-1 text-sm text-black opacity-70">
-          Enter VR (coming soon)
-        </button>
+        <a
+          href={`/vr360.html?src=${encodeURIComponent(src)}`}
+          target="_blank"
+          className="rounded-md bg-white px-3 py-1 text-sm text-black"
+        >
+          Enter VR
+        </a>
       </div>
     </div>
   );
