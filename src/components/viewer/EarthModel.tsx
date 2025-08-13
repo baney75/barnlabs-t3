@@ -5,7 +5,9 @@ import { useFrame } from "@react-three/fiber";
 import { useGLTF, Html } from "@react-three/drei";
 import { type Group } from "three";
 
-const EARTH_GLB_URL =
+const EARTH_GLB_URL_F =
+  "https://t3rgh6yjwx.ufs.sh/f/DGcq4LQh6E89nUUTez3rgOax2BzGHqujDRtWQswvYCIVlfkK";
+const EARTH_GLB_URL_D =
   "https://t3rgh6yjwx.ufs.sh/d/DGcq4LQh6E89nUUTez3rgOax2BzGHqujDRtWQswvYCIVlfkK?download=1&filename=Earth_Model.glb";
 
 function EarthFallback(props: React.JSX.IntrinsicElements["group"]) {
@@ -24,7 +26,8 @@ function EarthFallback(props: React.JSX.IntrinsicElements["group"]) {
 }
 
 function EarthGLB() {
-  const gltf = useGLTF(EARTH_GLB_URL);
+  // Drei's GLTF loader needs a direct file response
+  const gltf = useGLTF(EARTH_GLB_URL_D);
   return <primitive object={gltf.scene} />;
 }
 

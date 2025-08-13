@@ -46,19 +46,19 @@ export default async function Home({
             <div className="mt-3 flex flex-wrap gap-2">
               <a
                 rel="ar"
-                href="https://t3rgh6yjwx.ufs.sh/d/DGcq4LQh6E8984sWY0j2OeZAmXnfBGRoxasdK51iUqFvSJLI?download=1&filename=Earth_Model.usdz"
+                href="https://t3rgh6yjwx.ufs.sh/f/DGcq4LQh6E8984sWY0j2OeZAmXnfBGRoxasdK51iUqFvSJLI"
                 className="rounded-md bg-white px-3 py-1 text-sm text-black"
               >
                 View in AR (iOS)
               </a>
               <a
-                href={`intent://arvr.google.com/scene-viewer/1.0?file=${encodeURIComponent("https://t3rgh6yjwx.ufs.sh/d/DGcq4LQh6E89nUUTez3rgOax2BzGHqujDRtWQswvYCIVlfkK?download=1&filename=Earth_Model.glb")}#Intent;scheme=https;package=com.google.android.googlequicksearchbox;action=android.intent.action.VIEW;S.browser_fallback_url=${encodeURIComponent("https://t3rgh6yjwx.ufs.sh/d/DGcq4LQh6E89nUUTez3rgOax2BzGHqujDRtWQswvYCIVlfkK?download=1&filename=Earth_Model.glb")};end;`}
+                href={`intent://arvr.google.com/scene-viewer/1.0?file=${encodeURIComponent("https://t3rgh6yjwx.ufs.sh/f/DGcq4LQh6E89nUUTez3rgOax2BzGHqujDRtWQswvYCIVlfkK")}#Intent;scheme=https;package=com.google.android.googlequicksearchbox;action=android.intent.action.VIEW;S.browser_fallback_url=${encodeURIComponent("https://t3rgh6yjwx.ufs.sh/f/DGcq4LQh6E89nUUTez3rgOax2BzGHqujDRtWQswvYCIVlfkK")};end;`}
                 className="rounded-md bg-white px-3 py-1 text-sm text-black"
               >
                 View in AR (Android)
               </a>
               <a
-                href={`/vr360.html?src=${encodeURIComponent("https://t3rgh6yjwx.ufs.sh/d/DGcq4LQh6E89nUUTez3rgOax2BzGHqujDRtWQswvYCIVlfkK?download=1&filename=Earth_Model.glb")}`}
+                href={`/vr360.html?src=${encodeURIComponent("https://t3rgh6yjwx.ufs.sh/f/DGcq4LQh6E89nUUTez3rgOax2BzGHqujDRtWQswvYCIVlfkK")}`}
                 target="_blank"
                 className="rounded-md bg-white px-3 py-1 text-sm text-black"
               >
