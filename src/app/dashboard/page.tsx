@@ -22,18 +22,23 @@ export default async function DashboardPage() {
   function coerceContent(value: unknown): DashboardContent {
     const v = value as { cards?: unknown } | null | undefined;
     if (!v || !Array.isArray(v.cards)) return { cards: [] };
-    // Minimal shape validation
-    const cards = v.cards
-      .filter((c: any) => c && typeof c.id === "string")
-      .map((c: any) => ({
-        id: String(c.id),
-        type: (c.type as CardType) ?? "markdown",
-        x: Number(c.x ?? 0),
-        y: Number(c.y ?? 0),
-        w: Number(c.w ?? 4),
-        h: Number(c.h ?? 3),
-        data: (c.data as Record<string, unknown>) ?? {},
-      }));
+    // Minimal shape validation without `any`
+    const cards: DashboardContent["cards"] = [];
+    for (const raw of v.cards) {
+      if (!raw || typeof raw !== "object") continue;
+      const c = raw as Partial<Record<string, unknown>>;
+      const id = typeof c.id === "string" ? c.id : undefined;
+      if (!id) continue;
+      const type = (
+        typeof c.type === "string" ? c.type : "markdown"
+      ) as CardType;
+      const x = typeof c.x === "number" ? c.x : Number(c.x ?? 0);
+      const y = typeof c.y === "number" ? c.y : Number(c.y ?? 0);
+      const w = typeof c.w === "number" ? c.w : Number(c.w ?? 4);
+      const h = typeof c.h === "number" ? c.h : Number(c.h ?? 3);
+      const data = (c.data as Record<string, unknown>) ?? {};
+      cards.push({ id, type, x, y, w, h, data });
+    }
     return { cards };
   }
   const initialContent = coerceContent(doc.content as unknown);

@@ -77,8 +77,16 @@ export default function TrecfPage() {
               education, and visitor services in one destination. Explore exhibits, climb the 75&apos; glass tower, and learn how to keep Presque Isle pristine.
             </p>
             <div className="grid grid-cols-2 gap-3">
-              <img alt="TREC exterior" src="https://upload.wikimedia.org/wikipedia/commons/1/1e/Tom_Ridge_Environmental_Center.jpg" className="h-40 w-full rounded-md object-cover" />
-              <img alt="Presque Isle" src="https://upload.wikimedia.org/wikipedia/commons/8/8a/Presque_Isle_State_Park.jpg" className="h-40 w-full rounded-md object-cover" />
+              <img
+                alt="TREC exterior (outside)"
+                src="https://t3rgh6yjwx.ufs.sh/f/DGcq4LQh6E89gFPm3ho28ADqJz1tYU6id43wp5sjPVH7x9kS"
+                className="h-40 w-full rounded-md object-cover"
+              />
+              <img
+                alt="TREC interior (inside)"
+                src="https://t3rgh6yjwx.ufs.sh/f/DGcq4LQh6E89hz58uQpvRJ2ubg0iEeqLh6flO9Pm5STDWYaB"
+                className="h-40 w-full rounded-md object-cover"
+              />
             </div>
             <div className="rounded-md bg-[color:var(--color-goals-bg)] p-4 text-[color:var(--color-header-text)]">
               <div className="font-semibold">Plan Your Visit</div>
@@ -89,6 +97,9 @@ export default function TrecfPage() {
               </ul>
             </div>
           </div>
+        </div>
+        <div className="mx-auto max-w-6xl px-4 pb-12 text-sm opacity-80">
+          Created by the team at BARN Labs
         </div>
       </section>
     </main>

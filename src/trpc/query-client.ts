@@ -14,13 +14,14 @@ export const createQueryClient = () =>
       },
       dehydrate: {
         serializeData: SuperJSON.serialize,
-        shouldDehydrateQuery: (query: unknown) => {
-          const q = query as { state?: { status?: string } };
-          return (
-            defaultShouldDehydrateQuery(query as any) ||
-            q.state?.status === "pending"
-          );
-        },
+        shouldDehydrateQuery: (query: {
+          state?: { status?: "pending" | "success" | "error" };
+        }) =>
+          defaultShouldDehydrateQuery(
+            query as unknown as Parameters<
+              typeof defaultShouldDehydrateQuery
+            >[0],
+          ) || query.state?.status === "pending",
       },
       hydrate: {
         deserializeData: SuperJSON.deserialize,
