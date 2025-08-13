@@ -2,7 +2,7 @@
 import * as React from "react";
 import { useRef, Suspense } from "react";
 import { useFrame } from "@react-three/fiber";
-import { useGLTF, Html } from "@react-three/drei";
+import { useGLTF } from "@react-three/drei";
 import { type Group } from "three";
 
 const EARTH_GLB_URL_D =
@@ -33,7 +33,7 @@ class ErrorBoundary extends React.Component<
   { children: React.ReactNode; fallback: React.ReactNode },
   { hasError: boolean }
 > {
-  constructor(props: { children: React.ReactNode }) {
+  constructor(props: { children: React.ReactNode; fallback: React.ReactNode }) {
     super(props);
     this.state = { hasError: false };
   }
