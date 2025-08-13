@@ -40,11 +40,10 @@ export default function ModelViewer({
           </a>
         )}
         <a
-          href={src}
-          target="_blank"
+          href={`intent://arvr.google.com/scene-viewer/1.0?file=${encodeURIComponent(src)}#Intent;scheme=https;package=com.google.android.googlequicksearchbox;action=android.intent.action.VIEW;S.browser_fallback_url=${encodeURIComponent(src)};end;`}
           className="rounded-md bg-white px-3 py-1 text-sm text-black"
         >
-          Download GLB
+          View in AR (Android)
         </a>
         <a
           href={`/vr360.html?src=${encodeURIComponent(src)}`}

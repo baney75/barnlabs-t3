@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { Button } from "~/components/ui/button";
@@ -10,22 +11,29 @@ export default function SignInPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") ?? "/dashboard";
 
   async function onCredentials() {
     setLoading(true);
     try {
-      await signIn("credentials", {
+      const res = await signIn("credentials", {
         email,
         password,
-        callbackUrl: "/dashboard",
+        callbackUrl,
       });
+      // next-auth returns null when redirecting, otherwise error object
+      if (res && (res as unknown as { error?: string }).error) {
+        // stay on page to show error via query param handled by next-auth
+        setLoading(false);
+      }
     } finally {
       setLoading(false);
     }
   }
 
   async function onGoogle() {
-    await signIn("google", { callbackUrl: "/dashboard" });
+    await signIn("google", { callbackUrl });
   }
 
   return (
@@ -38,6 +46,8 @@ export default function SignInPage() {
           <Label htmlFor="email">Email</Label>
           <Input
             id="email"
+            type="email"
+            autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
@@ -47,6 +57,7 @@ export default function SignInPage() {
           <Input
             id="password"
             type="password"
+            autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />

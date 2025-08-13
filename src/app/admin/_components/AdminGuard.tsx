@@ -31,7 +31,9 @@ export default function AdminGuard({
     const role = (session?.user as { role?: "USER" | "ADMIN" } | undefined)
       ?.role;
     if (!session?.user) {
-      router.replace("/auth/signin?callbackUrl=%2Fadmin");
+      const url = new URL("/auth/signin", window.location.origin);
+      url.searchParams.set("callbackUrl", "/admin");
+      router.replace(url.toString());
       return;
     }
     if (role !== "ADMIN") {

@@ -68,7 +68,8 @@ Vercel is our hosting and deployment platform. All interactions should be done t
 - `AUTH_SECRET` - NextAuth.js session encryption secret
 - `GOOGLE_CLIENT_ID` - Google OAuth client ID
 - `GOOGLE_CLIENT_SECRET` - Google OAuth client secret
-- `AUTH_URL` - Base URL for NextAuth callbacks (http://localhost:3000 for dev)
+- `NEXTAUTH_URL` - Base URL for NextAuth (must match the running URL; e.g., http://localhost:3001 in dev when port is taken)
+- `AUTH_URL` - Legacy/compat base URL for callbacks (keep aligned with NEXTAUTH_URL)
 - `PUB_URL` - Public production URL (barnlabs.net)
 
 ### **Deployments**
@@ -114,21 +115,21 @@ export const generateUploadUrl = protectedProcedure
 - In production: Bootstrap token is sent via email using Resend
 - Admin user is created by submitting the token along with email/password
 
-### **File Upload System**
-- UploadThing handles all file uploads with 500MB limit per file
-- Model files (.glb, .usdz) supported with automatic USDZ suggestion for GLB > 25MB
+- UploadThing handles all file uploads with an effective limit of ~300MB per file (tunable)
+- Model files (.glb, .usdz) are supported. Automatic USDZ suggestion for GLB > 25MB; for large models request users upload the corresponding USDZ/GLB pair and link them
 - Image uploads for user dashboard logos up to 4MB
 
 ### **3D Model & AR/VR Features**
 - React Three Fiber powers the web 3D model viewer
 - iOS AR Quick Look integration via `.usdz` files
-- Google Scene Viewer for Android AR via `.glb` files
-- VR 360 viewer available at `/vr360.html` using A-Frame
+- Google Scene Viewer for Android AR via intent URL (with web fallback), not a raw download link
+- VR viewer: improved WebXR-capable viewer planned; basic `/vr360.html` exists as a fallback
 
 ### **Dashboard System**
 - Drag-and-drop grid layout using react-grid-layout
 - Live Markdown preview with secure HTML sanitization
 - Support for Model, Video, PDF, and Markdown card types
 - User logo/icon customization with real-time preview
+- Per-user scoping for assets and dashboards; admins can access all, employees have elevated assistance permissions
 
 This document serves as the single source of truth for development practices. It should be updated as our tools and processes evolve.

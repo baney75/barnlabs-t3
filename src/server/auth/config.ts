@@ -33,6 +33,10 @@ declare module "next-auth" {
  * @see https://next-auth.js.org/configuration/options
  */
 export const authConfig = {
+  trustHost: true,
+  session: {
+    strategy: "jwt",
+  },
   providers: [
     Google({
       clientId: env.GOOGLE_CLIENT_ID ?? "",
@@ -68,5 +72,9 @@ export const authConfig = {
         role: (user as unknown as { role?: "USER" | "ADMIN" }).role,
       },
     }),
+  },
+  pages: {
+    signIn: "/auth/signin",
+    error: "/auth/signin",
   },
 } satisfies NextAuthConfig;

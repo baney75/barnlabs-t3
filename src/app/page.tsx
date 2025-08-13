@@ -47,8 +47,7 @@ export default async function Home() {
                 View in AR (iOS)
               </a>
               <a
-                href="/Earth_Model.glb"
-                target="_blank"
+                href={`intent://arvr.google.com/scene-viewer/1.0?file=${encodeURIComponent("/Earth_Model.glb")}#Intent;scheme=https;package=com.google.android.googlequicksearchbox;action=android.intent.action.VIEW;S.browser_fallback_url=${encodeURIComponent("/Earth_Model.glb")};end;`}
                 className="rounded-md bg-white px-3 py-1 text-sm text-black"
               >
                 View in AR (Android)
