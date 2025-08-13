@@ -1,5 +1,6 @@
  
 import { z } from "zod";
+import { type Role } from "@prisma/client";
 import { adminProcedure, createTRPCRouter } from "~/server/api/trpc";
 
 export const adminRouter = createTRPCRouter({
@@ -13,7 +14,7 @@ export const adminRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const updated = await ctx.db.user.update({
         where: { id: input.userId },
-        data: { role: input.role as unknown as any },
+        data: { role: input.role as Role },
       });
       await ctx.db.auditLog.create({
         data: {

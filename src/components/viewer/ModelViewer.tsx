@@ -1,6 +1,7 @@
 "use client";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Stage, useGLTF } from "@react-three/drei";
+import { Suspense } from "react";
 // Relax types when local env lacks @types/three
 type GLTFResult = { scene: object };
 function GLB({ src }: { src: string }) {
@@ -46,7 +47,9 @@ export default function ModelViewer({
           {background !== "transparent" && <color attach="background" args={[bgColor!]} />}
           <ambientLight intensity={1.2} />
           <Stage intensity={0.3} environment={stageEnv as any}>
-            <GLB src={src} />
+            <Suspense fallback={null}>
+              <GLB src={src} />
+            </Suspense>
           </Stage>
           <OrbitControls enablePan={false} />
         </Canvas>

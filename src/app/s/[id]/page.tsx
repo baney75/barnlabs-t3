@@ -1,5 +1,8 @@
 import { notFound } from "next/navigation";
-import ModelViewer from "~/components/viewer/ModelViewer";
+import dynamic from "next/dynamic";
+const ModelViewer = dynamic(() => import("~/components/viewer/ModelViewer"), {
+  ssr: false,
+});
 import { api } from "~/trpc/server";
 import SharePageClient from "./_components/SharePageClient";
 
