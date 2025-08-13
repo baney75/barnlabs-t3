@@ -11,9 +11,10 @@ import { Textarea } from "~/components/ui/textarea";
 export default async function Home({
   searchParams,
 }: {
-  searchParams?: Record<string, string | string[] | undefined>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
 }) {
   await auth();
+  const sp = searchParams ? await searchParams : undefined;
 
   return (
     <HydrateClient>
@@ -118,10 +119,7 @@ export default async function Home({
               Contact Us
             </h2>
             {(() => {
-              const status =
-                typeof searchParams?.contact === "string"
-                  ? searchParams?.contact
-                  : undefined;
+              const status = typeof sp?.contact === "string" ? sp?.contact : undefined;
               if (!status) return null;
               return (
                 <div
