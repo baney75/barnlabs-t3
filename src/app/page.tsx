@@ -119,7 +119,8 @@ export default async function Home({
               Contact Us
             </h2>
             {(() => {
-              const status = typeof sp?.contact === "string" ? sp?.contact : undefined;
+              const status =
+                typeof sp?.contact === "string" ? sp?.contact : undefined;
               if (!status) return null;
               return (
                 <div
