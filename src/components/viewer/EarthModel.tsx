@@ -5,7 +5,8 @@ import { useFrame } from "@react-three/fiber";
 import { useGLTF, Html } from "@react-three/drei";
 import { type Group } from "three";
 
-const EARTH_GLB_URL_D = "https://t3rgh6yjwx.ufs.sh/f/DGcq4LQh6E89nUUTez3rgOax2BzGHqujDRtWQswvYCIVlfkK";
+const EARTH_GLB_URL_D =
+  "https://t3rgh6yjwx.ufs.sh/f/DGcq4LQh6E89nUUTez3rgOax2BzGHqujDRtWQswvYCIVlfkK";
 
 function EarthFallback(props: React.JSX.IntrinsicElements["group"]) {
   const group = useRef<Group>(null);
@@ -29,7 +30,7 @@ function EarthGLB() {
 }
 
 class ErrorBoundary extends React.Component<
-  { children: React.ReactNode },
+  { children: React.ReactNode; fallback: React.ReactNode },
   { hasError: boolean }
 > {
   constructor(props: { children: React.ReactNode }) {
@@ -40,7 +41,7 @@ class ErrorBoundary extends React.Component<
     return { hasError: true };
   }
   render() {
-    if (this.state.hasError) return null;
+    if (this.state.hasError) return this.props.fallback as React.ReactElement;
     return this.props.children;
   }
 }
@@ -49,27 +50,8 @@ export default function EarthModel(
   props: React.JSX.IntrinsicElements["group"],
 ) {
   return (
-    <ErrorBoundary>
-      <Suspense
-        fallback={
-          <>
-            <EarthFallback {...props} />
-            <Html center>
-              <div className="w-48">
-                <div className="h-2 w-full rounded bg-white/20">
-                  <div
-                    className="h-2 rounded bg-white"
-                    style={{ width: "35%" }}
-                  />
-                </div>
-                <div className="mt-2 text-center text-xs text-white">
-                  Loading…
-                </div>
-              </div>
-            </Html>
-          </>
-        }
-      >
+    <ErrorBoundary fallback={<EarthFallback {...props} />}>
+      <Suspense fallback={<EarthFallback {...props} />}>
         <group {...props}>
           <EarthGLB />
         </group>
