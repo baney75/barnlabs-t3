@@ -12,8 +12,26 @@ export const dashboardRouter = createTRPCRouter({
           ownerId: ctx.session.user.id,
           content: {
             cards: [
-              { id: "welcome", type: "markdown", x: 0, y: 0, w: 6, h: 4, data: { md: "# Welcome to BarnLabs\nEdit your dashboard and add cards." } },
-              { id: "model", type: "model", x: 6, y: 0, w: 6, h: 6, data: { src: "/Earth_Model.glb" } },
+              {
+                id: "welcome",
+                type: "markdown",
+                x: 0,
+                y: 0,
+                w: 6,
+                h: 4,
+                data: {
+                  md: "# Welcome to BarnLabs\nEdit your dashboard and add cards.",
+                },
+              },
+              {
+                id: "model",
+                type: "model",
+                x: 6,
+                y: 0,
+                w: 6,
+                h: 6,
+                data: { src: "/Earth_Model.glb" },
+              },
             ],
           },
         },
@@ -33,5 +51,3 @@ export const dashboardRouter = createTRPCRouter({
       return updated;
     }),
 });
-
-
