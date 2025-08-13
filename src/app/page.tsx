@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Suspense } from "react";
+import NavBar from "~/components/NavBar";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Stage } from "@react-three/drei";
 import dynamic from "next/dynamic";
@@ -26,17 +27,7 @@ export default async function Home() {
     <HydrateClient>
       <main className="min-h-screen bg-[color:var(--color-hero-bg)] text-[color:var(--color-hero-text)]">
         {/* Header */}
-        <header className="w-full border-b border-white/10 bg-[color:var(--color-header-bg)] text-[color:var(--color-header-text)]">
-          <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
-            <div className="[font-family:var(--font-display)] text-2xl font-bold">
-              BarnLabs
-            </div>
-            <nav className="space-x-6 text-sm">
-              <a href="#features">Features</a>
-              <a href="#contact">Contact</a>
-            </nav>
-          </div>
-        </header>
+        <NavBar />
 
         {/* Hero */}
         <section className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-4 py-12 md:grid-cols-2 md:items-center">
