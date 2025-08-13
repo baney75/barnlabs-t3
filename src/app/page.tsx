@@ -38,6 +38,29 @@ export default async function Home() {
           </div>
           <div className="h-[360px] rounded-lg bg-black/20">
             <HeroCanvas />
+            <div className="mt-3 flex flex-wrap gap-2">
+              <a
+                rel="ar"
+                href="/Earth_Model.usdz"
+                className="rounded-md bg-white px-3 py-1 text-sm text-black"
+              >
+                View in AR (iOS)
+              </a>
+              <a
+                href="/Earth_Model.glb"
+                target="_blank"
+                className="rounded-md bg-white px-3 py-1 text-sm text-black"
+              >
+                View in AR (Android)
+              </a>
+              <a
+                href={`/vr360.html?src=${encodeURIComponent("/Earth_Model.glb")}`}
+                target="_blank"
+                className="rounded-md bg-white px-3 py-1 text-sm text-black"
+              >
+                Enter VR
+              </a>
+            </div>
           </div>
         </section>
 

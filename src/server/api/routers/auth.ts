@@ -10,7 +10,7 @@ const PASSWORD_MIN = 8;
 
 export const authRouter = createTRPCRouter({
   // Admin bootstrap: if no ADMIN exists, allow creating the first one with a console-logged key in dev
-  ensureAdminBootstrap: publicProcedure.mutation(
+  ensureAdminBootstrap: publicProcedure.query(
     async ({ ctx }: { ctx: { db: PrismaClient } }) => {
       const anyAdmin = await ctx.db.user.findFirst({
         where: { role: "ADMIN" },
