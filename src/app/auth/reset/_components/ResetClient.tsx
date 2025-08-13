@@ -1,12 +1,20 @@
 "use client";
 import { useSearchParams, useRouter } from "next/navigation";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { api } from "~/trpc/react";
 
 export default function ResetClient() {
+  return (
+    <Suspense>
+      <ResetInner />
+    </Suspense>
+  );
+}
+
+function ResetInner() {
   const params = useSearchParams();
   const router = useRouter();
   const token = params.get("token") ?? "";

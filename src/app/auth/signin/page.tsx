@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
@@ -8,6 +8,14 @@ import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 
 export default function SignInPage() {
+  return (
+    <Suspense>
+      <SignInInner />
+    </Suspense>
+  );
+}
+
+function SignInInner() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
