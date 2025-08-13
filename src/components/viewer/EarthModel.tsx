@@ -15,7 +15,7 @@ export default function EarthModel(
   return (
     <group ref={group} {...props}>
       {}
-      <primitive object={(gltf as any).scene} />
+      <primitive object={gltf.scene} />
     </group>
   );
 }

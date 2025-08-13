@@ -91,7 +91,7 @@ export default function DashboardClient({
               if (!f) return;
               const reader = new FileReader();
               reader.onload = async () => {
-                const url = String(reader.result ?? "");
+                const url = reader.result as string;
                 await updateLogo.mutateAsync({ image: url });
               };
               reader.readAsDataURL(f);
@@ -137,7 +137,7 @@ export default function DashboardClient({
                 {card.type === "markdown" && (
                   <div className="grid gap-2 md:grid-cols-2">
                     <Textarea
-                      defaultValue={String(card.data?.md ?? "")}
+                      defaultValue={card.data?.md as string ?? ""}
                       onChange={(e) => {
                         const md = e.target.value;
                         setContent((prev) => ({
@@ -155,7 +155,7 @@ export default function DashboardClient({
                         remarkPlugins={[remarkGfm]}
                         rehypePlugins={[rehypeSanitize]}
                       >
-                        {String(card.data?.md ?? "")}
+                        {card.data?.md as string ?? ""}
                       </ReactMarkdown>
                     </div>
                   </div>
@@ -165,7 +165,7 @@ export default function DashboardClient({
                   <div className="space-y-2">
                     <Input
                       placeholder="YouTube URL"
-                      defaultValue={String(card.data?.url ?? "")}
+                      defaultValue={String(card.data?.url)}
                       onChange={(e) =>
                         setContent((prev) => ({
                           cards: prev.cards.map((c) =>
@@ -196,7 +196,7 @@ export default function DashboardClient({
                   <div className="h-full">
                     <Input
                       placeholder="/path/to.pdf"
-                      defaultValue={String(card.data?.src ?? "")}
+                      defaultValue={String(card.data?.src)}
                       onChange={(e) =>
                         setContent((prev) => ({
                           cards: prev.cards.map((c) =>
@@ -223,7 +223,7 @@ export default function DashboardClient({
                   <div className="space-y-2">
                     <Input
                       placeholder="/Earth_Model.glb"
-                      defaultValue={String(card.data?.src ?? "")}
+                      defaultValue={String(card.data?.src)}
                       onChange={(e) =>
                         setContent((prev) => ({
                           cards: prev.cards.map((c) =>

@@ -3,7 +3,6 @@ import { useCallback, useState } from "react";
 import { UploadButton } from "@uploadthing/react";
 import type { OurFileRouter } from "~/server/uploadthing/core";
 import { Button } from "~/components/ui/button";
-import { useEffect } from "react";
 
 export default function UploadPanel({
   onComplete,

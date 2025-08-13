@@ -3,6 +3,9 @@ import { z } from "zod";
 import { type Role } from "@prisma/client";
 import { adminProcedure, createTRPCRouter } from "~/server/api/trpc";
 
+
+
+
 export const adminRouter = createTRPCRouter({
   listUsers: adminProcedure.query(async ({ ctx }) => {
     return ctx.db.user.findMany({ orderBy: { createdAt: "desc" } });

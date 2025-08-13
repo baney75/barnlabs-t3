@@ -15,7 +15,7 @@ export async function POST(req: Request) {
     );
     const result = await caller.auth.completeAdminBootstrap(body);
     return NextResponse.json(result);
-  } catch (e) {
+  } catch {
     return NextResponse.json({ ok: false }, { status: 400 });
   }
 }

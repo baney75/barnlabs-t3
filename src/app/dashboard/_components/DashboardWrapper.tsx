@@ -1,5 +1,3 @@
-"use client";
-
 import dynamic from "next/dynamic";
 
 const DashboardClient = dynamic(
@@ -7,8 +5,22 @@ const DashboardClient = dynamic(
   { ssr: false },
 );
 
+type CardType = "markdown" | "model" | "video" | "pdf";
+interface CardDef {
+  id: string;
+  type: CardType;
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  data: Record<string, unknown>;
+}
+interface DashboardContent {
+  cards: CardDef[];
+}
+
 interface DashboardWrapperProps {
-  initialContent: any;
+  initialContent: DashboardContent;
 }
 
 export default function DashboardWrapper({ initialContent }: DashboardWrapperProps) {

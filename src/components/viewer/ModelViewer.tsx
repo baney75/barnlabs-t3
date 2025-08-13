@@ -67,7 +67,7 @@ export default function ModelViewer({
         <Canvas camera={{ position: [2.2, 1.2, 2.2], fov: 50 }}>
           {background !== "transparent" && <color attach="background" args={[bgColor!]} />}
           <ambientLight intensity={1.2} />
-          <Stage intensity={0.3} environment={stageEnv as any}>
+          <Stage intensity={0.3} environment={stageEnv}>
             <Suspense fallback={null}>
               <ErrorBoundary>
                 <GLB src={src} />

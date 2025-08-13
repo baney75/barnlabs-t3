@@ -29,8 +29,8 @@ export default function AdminSetupPage() {
         body: JSON.stringify(formData),
       });
 
-      const result = await response.json();
-      
+      const result = await response.json() as { ok: boolean };
+
       if (result.ok) {
         router.push("/auth/signin?message=Admin account created successfully");
       } else {
