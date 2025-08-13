@@ -6,9 +6,10 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --font-sans: 'Galdeano', ui-sans-serif, system-ui, sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --font-display: 'Milonga', 'Galdeano', ui-serif, serif;
+  --font-sans:
+    "Galdeano", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-display: "Milonga", "Galdeano", ui-serif, serif;
 }
 
 @theme inline {
