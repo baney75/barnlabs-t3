@@ -8,7 +8,9 @@ import { Label } from "~/components/ui/label";
 import { Textarea } from "~/components/ui/textarea";
 import { api } from "~/trpc/react";
 
-const QRCode = dynamic(() => import("qrcode.react").then(m => m.QRCodeSVG), { ssr: false });
+const QRCode = dynamic(() => import("~/components/qr/QRCodeClient"), {
+  ssr: false,
+}) as unknown as (p: { value: string; size?: number }) => JSX.Element;
 
 type Mode = "existing" | "url";
 
@@ -31,7 +33,12 @@ export default function ShareCreatorClient() {
 
   async function onCreate() {
     if (!canSubmit) return;
-    const input: any = { title, description: description || undefined };
+    const input: {
+      title: string;
+      description?: string;
+      modelId?: string;
+      modelUrl?: string;
+    } = { title, description: description || undefined };
     if (mode === "existing") input.modelId = modelId;
     else input.modelUrl = modelUrl;
     const created = await create.mutateAsync(input);
@@ -45,10 +52,15 @@ export default function ShareCreatorClient() {
         <div className="text-lg font-semibold">Share created!</div>
         <div className="flex items-center gap-2">
           <Input value={shareLink} readOnly />
-          <Button onClick={() => navigator.clipboard.writeText(shareLink)}>Copy</Button>
-          <Link href={`/s/${shareId}`} className="underline">Open</Link>
+          <Button onClick={() => navigator.clipboard.writeText(shareLink)}>
+            Copy
+          </Button>
+          {/* @ts-expect-error next/link JSX type */}
+          <Link href={`/s/${shareId}`} className="underline">
+            Open
+          </Link>
         </div>
-        <div className="rounded-md border p-4 inline-block">
+        <div className="inline-block rounded-md border p-4">
           <QRCode value={shareLink} size={192} />
         </div>
       </div>
@@ -60,22 +72,43 @@ export default function ShareCreatorClient() {
       <div className="grid gap-4 md:grid-cols-2">
         <div className="space-y-2">
           <Label htmlFor="title">Title</Label>
-          <Input id="title" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Share title" />
+          <Input
+            id="title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Share title"
+          />
         </div>
         <div className="space-y-2">
           <Label htmlFor="description">Description</Label>
-          <Textarea id="description" rows={3} value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Optional description" />
+          <Textarea
+            id="description"
+            rows={3}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Optional description"
+          />
         </div>
       </div>
 
       <div className="space-y-2">
         <div className="flex items-center gap-4">
           <label className="flex items-center gap-2 text-sm">
-            <input type="radio" name="mode" checked={mode === "existing"} onChange={() => setMode("existing")} />
+            <input
+              type="radio"
+              name="mode"
+              checked={mode === "existing"}
+              onChange={() => setMode("existing")}
+            />
             Use an existing model
           </label>
           <label className="flex items-center gap-2 text-sm">
-            <input type="radio" name="mode" checked={mode === "url"} onChange={() => setMode("url")} />
+            <input
+              type="radio"
+              name="mode"
+              checked={mode === "url"}
+              onChange={() => setMode("url")}
+            />
             Provide a direct model URL
           </label>
         </div>
@@ -83,17 +116,29 @@ export default function ShareCreatorClient() {
         {mode === "existing" ? (
           <div className="space-y-2">
             <Label htmlFor="model">Model</Label>
-            <select id="model" className="w-full rounded-md border bg-background p-2" value={modelId} onChange={(e) => setModelId(e.target.value)}>
+            <select
+              id="model"
+              className="bg-background w-full rounded-md border p-2"
+              value={modelId}
+              onChange={(e) => setModelId(e.target.value)}
+            >
               <option value="">Select a model…</option>
               {(models ?? []).map((m) => (
-                <option key={m.id} value={m.id}>{m.title}</option>
+                <option key={m.id} value={m.id}>
+                  {m.title}
+                </option>
               ))}
             </select>
           </div>
         ) : (
           <div className="space-y-2">
             <Label htmlFor="modelUrl">Model URL (.glb)</Label>
-            <Input id="modelUrl" placeholder="https://…/file.glb" value={modelUrl} onChange={(e) => setModelUrl(e.target.value)} />
+            <Input
+              id="modelUrl"
+              placeholder="https://…/file.glb"
+              value={modelUrl}
+              onChange={(e) => setModelUrl(e.target.value)}
+            />
           </div>
         )}
       </div>
@@ -106,5 +151,3 @@ export default function ShareCreatorClient() {
     </div>
   );
 }
-
-

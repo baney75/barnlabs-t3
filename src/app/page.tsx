@@ -1,11 +1,5 @@
-import Link from "next/link";
-import { Suspense } from "react";
 import NavBar from "~/components/NavBar";
-import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Stage } from "@react-three/drei";
 import HeroCanvas from "~/components/hero/HeroCanvas";
-
-import { LatestPost } from "~/app/_components/post";
 import { auth } from "~/server/auth";
 import { api, HydrateClient } from "~/trpc/server";
 import { Button } from "~/components/ui/button";
@@ -51,9 +45,14 @@ export default async function Home() {
         </section>
 
         {/* Features */}
-        <section id="features" className="bg-[color:var(--color-features-bg)] py-12 text-black">
+        <section
+          id="features"
+          className="bg-[color:var(--color-features-bg)] py-12 text-black"
+        >
           <div className="mx-auto max-w-6xl px-4">
-            <h2 className="mb-6 [font-family:var(--font-display)] text-3xl">Features</h2>
+            <h2 className="mb-6 [font-family:var(--font-display)] text-3xl">
+              Features
+            </h2>
           </div>
           <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 px-4 md:grid-cols-3">
             {[
@@ -87,25 +86,59 @@ export default async function Home() {
         <div className="h-3 w-full bg-[color:var(--color-divider-bg)]" />
 
         {/* Contact */}
-        <section id="contact" className="bg-[color:var(--color-contact-bg)] py-14 text-[color:var(--color-contact-text)]">
+        <section
+          id="contact"
+          className="bg-[color:var(--color-contact-bg)] py-14 text-[color:var(--color-contact-text)]"
+        >
           <div className="mx-auto max-w-3xl px-4 text-center">
-            <h2 className="mb-2 [font-family:var(--font-display)] text-3xl">Contact Us</h2>
-            <p className="mb-6 opacity-90">Have a project or a question? Send us a message.</p>
-            <form action="/api/contact" method="post" className="mx-auto space-y-3 rounded-md bg-[color:var(--color-contact-form-bg)] p-4 text-left">
+            <h2 className="mb-2 [font-family:var(--font-display)] text-3xl">
+              Contact Us
+            </h2>
+            <p className="mb-6 opacity-90">
+              Have a project or a question? Send us a message.
+            </p>
+            <form
+              action="/api/contact"
+              method="post"
+              className="mx-auto space-y-3 rounded-md bg-[color:var(--color-contact-form-bg)] p-4 text-left"
+            >
               <div className="space-y-1">
                 <Label htmlFor="name">Name</Label>
-                <Input id="name" name="name" required className="bg-white text-black placeholder:text-gray-500" />
+                <Input
+                  id="name"
+                  name="name"
+                  required
+                  className="bg-white text-black placeholder:text-gray-500"
+                />
               </div>
               <div className="space-y-1">
                 <Label htmlFor="email">Email</Label>
-                <Input id="email" type="email" name="email" required className="bg-white text-black placeholder:text-gray-500" />
+                <Input
+                  id="email"
+                  type="email"
+                  name="email"
+                  required
+                  className="bg-white text-black placeholder:text-gray-500"
+                />
               </div>
               <div className="space-y-1">
                 <Label htmlFor="message">Message</Label>
-                <Textarea id="message" name="message" rows={4} required className="bg-white text-black placeholder:text-gray-500" />
+                <Textarea
+                  id="message"
+                  name="message"
+                  rows={4}
+                  required
+                  className="bg-white text-black placeholder:text-gray-500"
+                />
               </div>
-              <input type="hidden" name="access_key" value="f73f7250-5451-499f-8e96-5669baece62c" />
-              <Button className="bg-[color:var(--color-contact-button-bg)] text-black">Send</Button>
+              <input
+                type="hidden"
+                name="access_key"
+                value="f73f7250-5451-499f-8e96-5669baece62c"
+              />
+              <Button className="bg-[color:var(--color-contact-button-bg)] text-black">
+                Send
+              </Button>
             </form>
           </div>
         </section>

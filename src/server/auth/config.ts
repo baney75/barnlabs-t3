@@ -45,12 +45,14 @@ export const authConfig = {
         password: { label: "Password", type: "password" },
       },
       authorize: async (credentials) => {
-        if (!credentials?.email || !credentials?.password) return null;
+        const email = credentials?.email as string | undefined;
+        const password = credentials?.password as string | undefined;
+        if (!email || !password) return null;
         const user = await db.user.findUnique({
-          where: { email: credentials.email },
+          where: { email },
         });
         if (!user?.passwordHash) return null;
-        const valid = await compare(credentials.password, user.passwordHash);
+        const valid = await compare(password, user.passwordHash);
         if (!valid) return null;
         return { id: user.id, name: user.name, email: user.email };
       },
@@ -63,8 +65,7 @@ export const authConfig = {
       user: {
         ...session.user,
         id: user.id,
-        // @ts-expect-error: role exists on User model
-        role: (user as any).role,
+        role: (user as unknown as { role?: "USER" | "ADMIN" }).role,
       },
     }),
   },

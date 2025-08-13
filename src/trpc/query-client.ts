@@ -14,9 +14,10 @@ export const createQueryClient = () =>
       },
       dehydrate: {
         serializeData: SuperJSON.serialize,
-        shouldDehydrateQuery: (query) =>
+        shouldDehydrateQuery: (query: unknown) =>
           defaultShouldDehydrateQuery(query) ||
-          query.state.status === "pending",
+          // @ts-expect-error minimal typing for dehydrate condition
+          (query as any).state.status === "pending",
       },
       hydrate: {
         deserializeData: SuperJSON.deserialize,

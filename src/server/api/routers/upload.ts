@@ -23,4 +23,10 @@ export const uploadRouter = createTRPCRouter({
         },
       });
     }),
+  suggestUsdz: protectedProcedure
+    .input(z.object({ glbSizeBytes: z.number().int().positive() }))
+    .query(async ({ input }) => {
+      // If GLB > 25MB, suggest USDZ companion for iOS AR
+      return { requireUsdz: input.glbSizeBytes > 25 * 1024 * 1024 };
+    }),
 });

@@ -1,17 +1,22 @@
 "use client";
-import dynamic from "next/dynamic";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Stage, useGLTF } from "@react-three/drei";
-
+// Relax types when local env lacks @types/three
+type GLTFResult = { scene: object };
 function GLB({ src }: { src: string }) {
-  const gltf = useGLTF(src);
-  return (
-    // eslint-disable-next-line react/no-unknown-property
-    <primitive object={(gltf as any).scene} />
-  );
+  const result: GLTFResult = useGLTF(src) as unknown as GLTFResult;
+  return <primitive object={result.scene} />;
 }
 
-export default function ModelViewer({ src, usdz, title }: { src: string; usdz?: string; title?: string }) {
+export default function ModelViewer({
+  src,
+  usdz,
+  title: _title,
+}: {
+  src: string;
+  usdz?: string;
+  title?: string;
+}) {
   return (
     <div className="space-y-2">
       <div className="h-[360px] rounded-lg bg-black/20">
@@ -21,6 +26,7 @@ export default function ModelViewer({ src, usdz, title }: { src: string; usdz?: 
           <Stage intensity={0.3}>
             <GLB src={src} />
           </Stage>
+          {/* @ts-expect-error drei types vs React 19 are slightly out of sync */}
           <OrbitControls enablePan={false} />
         </Canvas>
       </div>
@@ -52,5 +58,3 @@ export default function ModelViewer({ src, usdz, title }: { src: string; usdz?: 
     </div>
   );
 }
-
-

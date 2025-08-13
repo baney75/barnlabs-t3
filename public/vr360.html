@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VR 360° Viewer - BarnLabs</title>
+    <style>
+      body {
+        margin: 0;
+        background: #000;
+        color: #fff;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+        overflow: hidden;
+      }
+      .vr-container {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .placeholder {
+        text-align: center;
+        opacity: 0.9;
+      }
+      .tip {
+        position: fixed;
+        top: 16px;
+        left: 16px;
+        right: 16px;
+        text-align: center;
+        background: rgba(0, 0, 0, 0.75);
+        padding: 12px 14px;
+        border-radius: 10px;
+      }
+      .fade-out {
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.35s ease;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="vr-container">
+      <div id="loader" class="placeholder">
+        <h1>🥽 VR 360°</h1>
+        <p>Loading immersive view…</p>
+      </div>
+      <div id="scene-root" style="position: absolute; inset: 0"></div>
+    </div>
+
+    <div id="tip" class="tip">
+      <strong>Rotate your phone</strong> or place it in a headset. Tap to
+      dismiss.
+    </div>
+
+    <script>
+      const p = new URLSearchParams(location.search);
+      const model = p.get("src") || p.get("model");
+
+      (function init() {
+        if (!model) return;
+        const s = document.createElement("script");
+        s.src = "https://aframe.io/releases/1.5.0/aframe.min.js";
+        s.onload = () => {
+          const root = document.getElementById("scene-root");
+          root.innerHTML = `
+            <a-scene renderer="colorManagement: true; physicallyCorrectLights: true; antialias: true" background="color: #000" vr-mode-ui="enabled: true">
+              <a-assets>
+                <a-asset-item id="asset" src="${model}"></a-asset-item>
+              </a-assets>
+              <a-entity position="0 1.6 0">
+                <a-entity gltf-model="#asset" position="0 0 -2" rotation="0 45 0" shadow="cast: true; receive: true"></a-entity>
+              </a-entity>
+              <a-entity light="type: ambient; intensity: 0.7"></a-entity>
+              <a-entity light="type: directional; intensity: 1.0" position="1 3 2"></a-entity>
+              <a-sky color="#000"></a-sky>
+            </a-scene>`;
+          const scene = document.querySelector("a-scene");
+          scene &&
+            scene.addEventListener("loaded", () => {
+              const l = document.getElementById("loader");
+              if (l) l.style.display = "none";
+            });
+        };
+        document.head.appendChild(s);
+      })();
+
+      document.addEventListener(
+        "click",
+        () => {
+          const t = document.getElementById("tip");
+          if (t) t.classList.add("fade-out");
+          const DM = window.DeviceMotionEvent;
+          if (DM && typeof DM.requestPermission === "function") {
+            DM.requestPermission().catch(() => {});
+          }
+        },
+        { once: true },
+      );
+    </script>
+  </body>
+</html>

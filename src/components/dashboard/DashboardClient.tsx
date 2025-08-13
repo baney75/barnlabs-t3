@@ -1,6 +1,9 @@
 "use client";
 import { useState, useMemo } from "react";
 import dynamic from "next/dynamic";
+// Suppress type friction for React 19
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeSanitize from "rehype-sanitize";
@@ -11,11 +14,11 @@ import { Textarea } from "~/components/ui/textarea";
 import { api } from "~/trpc/react";
 
 const ResponsiveGridLayout = dynamic(
-  async () => (await import("react-grid-layout")).Responsive,
+  async () => (await import("react-grid-layout")).Responsive as any,
   { ssr: false },
 );
 const WidthProvider = dynamic(
-  async () => (await import("react-grid-layout")).WidthProvider,
+  async () => (await import("react-grid-layout")).WidthProvider as any,
   { ssr: false },
 );
 const RGL = (props: any) => {
@@ -34,7 +37,7 @@ interface CardDef {
   y: number;
   w: number;
   h: number;
-  data: any;
+  data: Record<string, unknown>;
 }
 interface DashboardContent {
   cards: CardDef[];
@@ -49,16 +52,35 @@ export default function DashboardClient({
     initialContent ?? { cards: [] },
   );
   const save = api.dashboard.save.useMutation();
+  const updateLogo = api.user.updateProfile.useMutation();
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-3">
         <Button
           onClick={() => save.mutate({ content })}
           disabled={save.isPending}
         >
           {save.isPending ? "Saving..." : "Save"}
         </Button>
+        <label className="text-sm">
+          Change logo/icon
+          <input
+            type="file"
+            accept="image/*"
+            className="ml-2 text-xs"
+            onChange={async (e) => {
+              const f = e.target.files?.[0];
+              if (!f) return;
+              const reader = new FileReader();
+              reader.onload = async () => {
+                const url = String(reader.result ?? "");
+                await updateLogo.mutateAsync({ image: url });
+              };
+              reader.readAsDataURL(f);
+            }}
+          />
+        </label>
       </div>
 
       <RGL
@@ -116,7 +138,7 @@ export default function DashboardClient({
                         remarkPlugins={[remarkGfm]}
                         rehypePlugins={[rehypeSanitize]}
                       >
-                        {card.data?.md ?? ""}
+                        {String(card.data?.md ?? "")}
                       </ReactMarkdown>
                     </div>
                   </div>
@@ -140,10 +162,13 @@ export default function DashboardClient({
                         }))
                       }
                     />
-                    {card.data?.url && (
+                    {typeof card.data?.url === "string" && card.data.url && (
                       <iframe
                         className="aspect-video w-full"
-                        src={card.data.url.replace("watch?v=", "embed/")}
+                        src={String(card.data.url).replace(
+                          "watch?v=",
+                          "embed/",
+                        )}
                         allowFullScreen
                       />
                     )}
@@ -168,10 +193,10 @@ export default function DashboardClient({
                         }))
                       }
                     />
-                    {card.data?.src && (
+                    {typeof card.data?.src === "string" && card.data.src && (
                       <iframe
                         className="mt-2 h-[400px] w-full"
-                        src={card.data.src}
+                        src={String(card.data.src)}
                       />
                     )}
                   </div>

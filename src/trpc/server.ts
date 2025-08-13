@@ -1,5 +1,6 @@
 import "server-only";
 
+// @ts-expect-error type drift in rsc helpers
 import { createHydrationHelpers } from "@trpc/react-query/rsc";
 import { headers } from "next/headers";
 import { cache } from "react";
