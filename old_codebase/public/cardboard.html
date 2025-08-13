@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VR Cardboard Mode - BARN Labs (Deprecated)</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background: #000;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+        overflow: hidden;
+      }
+
+      .cardboard-container {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+      }
+
+      .eye-view {
+        width: 50%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-right: 1px solid #333;
+      }
+
+      .eye-view:last-child {
+        border-right: none;
+      }
+
+      .eye-content {
+        text-align: center;
+        color: white;
+        padding: 1rem;
+      }
+
+      .instructions {
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        background: rgba(0, 0, 0, 0.9);
+        color: white;
+        padding: 10px;
+        border-radius: 8px;
+        z-index: 1000;
+        text-align: center;
+        font-size: 12px;
+        transition: opacity 0.3s ease;
+      }
+
+      .fade-out {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      @media (orientation: portrait) {
+        .instructions::before {
+          content: "🔄 Please rotate to landscape mode for VR";
+          display: block;
+          margin-bottom: 5px;
+          font-weight: bold;
+          color: #ffa500;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="cardboard-container">
+      <div class="eye-view" style="width: 100%">
+        <div class="eye-content">
+          <h2>VR Cardboard Deprecated</h2>
+          <p>Please use the built-in VR (WebXR) or the 360° viewer instead.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="instructions" id="instructions">
+      <strong>📦 Google Cardboard Mode</strong><br />
+      🥽 Insert phone into VR headset<br />
+      🔄 Rotate to landscape orientation<br />
+      <small>Tap to dismiss</small>
+    </div>
+
+    <script>
+      // Get model URL from query parameters
+      // Deprecated feature page; intentionally no-op rendering
+
+      // iOS motion permission prompt
+      document.addEventListener(
+        "click",
+        async () => {
+          var dm = window.DeviceMotionEvent;
+          // @ts-ignore - runtime feature detect
+          if (dm && typeof dm.requestPermission === "function") {
+            try {
+              await dm.requestPermission();
+            } catch (e) {}
+          }
+        },
+        { once: true }
+      );
+
+      // Auto-hide instructions after 6 seconds
+      setTimeout(() => {
+        const instructions = document.getElementById("instructions");
+        if (instructions) {
+          instructions.classList.add("fade-out");
+        }
+      }, 6000);
+
+      // Hide instructions on tap/click
+      document.addEventListener("click", () => {
+        const instructions = document.getElementById("instructions");
+        if (instructions) {
+          instructions.classList.add("fade-out");
+        }
+      });
+
+      // Force landscape orientation
+      if (screen.orientation && screen.orientation.lock) {
+        screen.orientation.lock("landscape").catch(() => {
+          console.log("Could not lock orientation");
+        });
+      }
+
+      // Request fullscreen
+      document.addEventListener(
+        "touchstart",
+        () => {
+          if (document.documentElement.requestFullscreen) {
+            document.documentElement.requestFullscreen();
+          } else if (document.documentElement.webkitRequestFullscreen) {
+            document.documentElement.webkitRequestFullscreen();
+          } else if (document.documentElement.mozRequestFullScreen) {
+            document.documentElement.mozRequestFullScreen();
+          } else if (document.documentElement.msRequestFullscreen) {
+            document.documentElement.msRequestFullscreen();
+          }
+        },
+        { once: true }
+      );
+    </script>
+  </body>
+</html>

@@ -1,0 +1,33 @@
+/* App.css - Wood-like cards, blue buttons */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary-blue text-msg-mint font-joy py-3 px-6 rounded-lg hover:bg-dark-blue hover:shadow-lg transition-all duration-300;
+  }
+
+  .section-container {
+    @apply max-w-7xl mx-auto px-4 md:px-8;
+  }
+
+  .wood-card {
+    @apply p-8 rounded-lg shadow-lg hover:drop-shadow-card-glow hover:scale-105 transition-all duration-300;
+    background-color: #d3b587; /* ply-brown base */
+    background-image: repeating-linear-gradient(
+        0deg,
+        transparent,
+        rgba(0, 0, 0, 0.05) 1px,
+        transparent 2px
+      ),
+      repeating-linear-gradient(
+        90deg,
+        rgba(0, 0, 0, 0.03) 0%,
+        transparent 5%,
+        rgba(0, 0, 0, 0.03) 10%
+      );
+    background-blend-mode: multiply; /* Subtle grain overlay */
+  }
+}
