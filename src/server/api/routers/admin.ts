@@ -11,9 +11,17 @@ export const adminRouter = createTRPCRouter({
       z.object({ userId: z.string().cuid(), role: z.enum(["USER", "EMPLOYEE", "ADMIN"]) }),
     )
     .mutation(async ({ ctx, input }) => {
-      return ctx.db.user.update({
+      const updated = await ctx.db.user.update({
         where: { id: input.userId },
         data: { role: input.role as unknown as any },
       });
+      await ctx.db.auditLog.create({
+        data: {
+          actorId: ctx.session.user.id,
+          event: "USER_ROLE_CHANGED",
+          details: { targetUserId: input.userId, newRole: input.role },
+        },
+      });
+      return updated;
     }),
 });

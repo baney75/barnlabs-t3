@@ -3,13 +3,17 @@ import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
 export const modelRouter = createTRPCRouter({
   listMine: protectedProcedure.query(async ({ ctx }) => {
-    return ctx.db.model.findMany({ where: { ownerId: ctx.session!.user.id } });
+    const role = (ctx.session?.user as { role?: "USER" | "EMPLOYEE" | "ADMIN" } | undefined)?.role;
+    if (role === "ADMIN" || role === "EMPLOYEE") {
+      return ctx.db.model.findMany({ orderBy: { createdAt: "desc" } });
+    }
+    return ctx.db.model.findMany({ where: { ownerId: ctx.session.user.id } });
   }),
   getById: protectedProcedure
     .input(z.object({ id: z.string().cuid() }))
     .query(async ({ ctx, input }) => {
       return ctx.db.model.findFirst({
-        where: { id: input.id, ownerId: ctx.session!.user.id },
+        where: { id: input.id, ownerId: ctx.session.user.id },
       });
     }),
   create: protectedProcedure
@@ -26,7 +30,7 @@ export const modelRouter = createTRPCRouter({
         data: {
           title: input.title,
           description: input.description,
-          ownerId: ctx.session!.user.id,
+          ownerId: ctx.session.user.id,
           glbStorageId: input.glbStorageId,
           usdzStorageId: input.usdzStorageId,
         },

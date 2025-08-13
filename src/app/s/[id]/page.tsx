@@ -31,7 +31,7 @@ export default async function SharePage({
         )}
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-[1fr_280px]">
-          <ModelViewer src={modelUrl} usdz={usdzUrl} title={share.title} />
+          <ModelViewer src={modelUrl} usdz={usdzUrl} title={share.title} background="dark" />
           <SharePageClient
             shareUrl={`${process.env.PUB_URL ?? "http://localhost:3000"}/s/${resolvedParams.id}`}
           />

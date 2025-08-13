@@ -8,8 +8,8 @@ const f = createUploadthing();
 
 export const ourFileRouter = {
   modelFiles: f({
-    "model/gltf-binary": { maxFileSize: "64MB", maxFileCount: 1 },
-    "application/octet-stream": { maxFileSize: "64MB", maxFileCount: 1 },
+    "model/gltf-binary": { maxFileSize: "512MB", maxFileCount: 1 },
+    "application/octet-stream": { maxFileSize: "512MB", maxFileCount: 1 },
   })
     .middleware(async ({ req }) => {
       const session = await auth();
@@ -28,7 +28,7 @@ export const ourFileRouter = {
       const name = file.name ?? file.key;
 
       // Store in database  
-      await db.model.create({
+      const rec = await db.model.create({
         data: {
           title: name,
           description: `Uploaded ${type} model`,
@@ -37,7 +37,13 @@ export const ourFileRouter = {
           usdzStorageId: null,
         },
       });
-
+      await db.auditLog.create({
+        data: {
+          actorId: metadata.userId,
+          event: "FILE_UPLOADED",
+          details: { key: file.key, url: file.url, type: file.type, modelId: rec.id },
+        },
+      });
       return { uploadedBy: metadata.userId };
     }),
 

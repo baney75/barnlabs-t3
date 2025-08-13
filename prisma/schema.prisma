@@ -58,6 +58,7 @@ model User {
     dashboards    Dashboard[]
     dashboardAssets DashboardAsset[]
     shares       Share[]
+    auditLogs    AuditLog[] @relation("UserToAuditLogs")
     passwordResetTokens PasswordResetToken[]
     createdAt     DateTime  @default(now())
     updatedAt     DateTime  @updatedAt
@@ -121,6 +122,15 @@ model Share {
 
     @@index([ownerId])
     @@index([modelId])
+}
+
+model AuditLog {
+    id        String   @id @default(cuid())
+    actorId   String
+    actor     User     @relation(name: "UserToAuditLogs", fields: [actorId], references: [id], onDelete: Cascade)
+    event     String
+    details   Json?
+    createdAt DateTime @default(now())
 }
 
 model PasswordResetToken {

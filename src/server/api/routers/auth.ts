@@ -151,6 +151,13 @@ export const authRouter = createTRPCRouter({
             },
           },
         });
+        await ctx.db.auditLog.create({
+          data: {
+            actorId: record.identifier.split(":")[1]!,
+            event: "USER_PASSWORD_RESET",
+            details: { method: "email_token" },
+          },
+        });
         return { ok: true };
       },
     ),
