@@ -58,7 +58,7 @@
 
     <script>
       const p = new URLSearchParams(location.search);
-      let model = (p.get("src") || p.get("model"));
+      let model = p.get("src") || p.get("model");
       // If proxied URL param is double-encoded, decode once
       try {
         if (model && model.includes("%2F")) model = decodeURIComponent(model);
@@ -73,10 +73,10 @@
           root.innerHTML = `
             <a-scene renderer="colorManagement: true; physicallyCorrectLights: true; antialias: true" background="color: #000" vr-mode-ui="enabled: true; enterVRButton: true">
               <a-assets>
-                <a-asset-item id="asset" src="${model}"></a-asset-item>
+                <a-asset-item id="asset" src="${model}" crossorigin="anonymous"></a-asset-item>
               </a-assets>
               <a-entity position="0 1.6 0">
-                <a-entity gltf-model="#asset" position="0 -0.6 -1.2" scale="1.2 1.2 1.2" rotation="0 30 0" shadow="cast: true; receive: true" animation="property: rotation; to: 0 390 0; loop: true; dur: 18000; easing: linear"></a-entity>
+                <a-entity gltf-model="#asset" position="0 0 -1.2" rotation="0 30 0" shadow="cast: true; receive: true" animation="property: rotation; to: 0 390 0; loop: true; dur: 18000; easing: linear"></a-entity>
               </a-entity>
               <!-- Mobile-friendly reticle (gaze cursor) for headset cases -->
               <a-entity cursor="fuse: true; fuseTimeout: 1000" position="0 0 -1" geometry="primitive: ring; radiusInner: 0.01; radiusOuter: 0.015" material="color: #fff; shader: flat"></a-entity>
@@ -84,6 +84,21 @@
               <a-entity light="type: directional; intensity: 1.0" position="1 3 2"></a-entity>
               <a-sky color="#000"></a-sky>
             </a-scene>`;
+          // Fit-to-view: once model loads, center and scale
+          const sceneEl = document.querySelector("a-scene");
+          sceneEl?.addEventListener("model-loaded", (e) => {
+            try {
+              const obj = e.detail.model || e.target.getObject3D("mesh");
+              if (!obj || !window.THREE) return;
+              const box = new THREE.Box3().setFromObject(obj);
+              const size = box.getSize(new THREE.Vector3());
+              const center = box.getCenter(new THREE.Vector3());
+              obj.position.sub(center);
+              const maxDim = Math.max(size.x, size.y, size.z) || 1;
+              const scale = 1.2 / maxDim;
+              obj.scale.setScalar(scale);
+            } catch {}
+          });
           const scene = document.querySelector("a-scene");
           scene &&
             scene.addEventListener("loaded", () => {
