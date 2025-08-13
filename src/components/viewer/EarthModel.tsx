@@ -1,7 +1,9 @@
 "use client";
 import * as React from "react";
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
+import { useFrame } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
+import * as THREE from "three";
 import { type Group } from "three";
 
 const EARTH_GLB_URL_D =
@@ -12,9 +14,28 @@ function EarthFallback(_: React.JSX.IntrinsicElements["group"]) {
 }
 
 function EarthGLB() {
-  // Drei's GLTF loader needs a direct file response
-  const gltf = useGLTF(EARTH_GLB_URL_D);
-  return <primitive object={gltf.scene} />;
+  const gltf = useGLTF(EARTH_GLB_URL_D) as unknown as { scene: THREE.Object3D };
+  const pivotRef = React.useRef<Group>(null);
+  useEffect(() => {
+    if (!gltf?.scene) return;
+    const box = new THREE.Box3().setFromObject(gltf.scene);
+    const center = box.getCenter(new THREE.Vector3());
+    gltf.scene.position.sub(center);
+    // Optional: normalize scale so the model roughly fits a unit sphere
+    const size = box.getSize(new THREE.Vector3());
+    const maxDim = Math.max(size.x, size.y, size.z) || 1;
+    const target = 1.2; // scene units
+    const scale = target / maxDim;
+    gltf.scene.scale.setScalar(scale);
+  }, [gltf?.scene]);
+  useFrame((_, delta) => {
+    if (pivotRef.current) pivotRef.current.rotation.y += delta * 0.2;
+  });
+  return (
+    <group ref={pivotRef}>
+      <primitive object={gltf.scene} />
+    </group>
+  );
 }
 
 class ErrorBoundary extends React.Component<
