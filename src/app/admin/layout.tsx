@@ -17,13 +17,9 @@ export default async function AdminLayout({
               BarnLabs Admin
             </div>
             <nav className="space-x-6 text-sm">
-              {/* @ts-expect-error next/link React 19 types */}
               <Link href="/admin">Stats</Link>
-              {/* @ts-expect-error next/link React 19 types */}
               <Link href="/admin/users">User Editor</Link>
-              {/* @ts-expect-error next/link React 19 types */}
               <Link href="/admin/resources">Resource Manager</Link>
-              {/* @ts-expect-error next/link React 19 types */}
               <Link href="/admin/email">Email</Link>
             </nav>
           </div>

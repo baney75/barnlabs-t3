@@ -26,7 +26,6 @@ export default function ModelViewer({
           <Stage intensity={0.3}>
             <GLB src={src} />
           </Stage>
-          {/* @ts-expect-error drei types vs React 19 are slightly out of sync */}
           <OrbitControls enablePan={false} />
         </Canvas>
       </div>

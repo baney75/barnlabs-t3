@@ -1,12 +1,7 @@
 import { redirect } from "next/navigation";
-import dynamic from "next/dynamic";
 import { auth } from "~/server/auth";
 import { HydrateClient, api } from "~/trpc/server";
-
-const DashboardClient = dynamic(
-  () => import("~/components/dashboard/DashboardClient"),
-  { ssr: false },
-);
+import DashboardWrapper from "./_components/DashboardWrapper";
 
 export default async function DashboardPage() {
   const session = await auth();
@@ -18,7 +13,7 @@ export default async function DashboardPage() {
         <h1 className="mb-4 [font-family:var(--font-display)] text-3xl">
           Welcome {session.user.name ?? "User"}!
         </h1>
-        <DashboardClient initialContent={doc.content as any} />
+        <DashboardWrapper initialContent={doc.content} />
       </main>
     </HydrateClient>
   );

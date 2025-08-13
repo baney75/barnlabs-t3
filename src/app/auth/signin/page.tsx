@@ -60,7 +60,6 @@ export default function SignInPage() {
           </Button>
         </div>
         <div className="text-sm opacity-80">
-          {/* @ts-expect-error next/link JSX types */}
           <Link href="/auth/forgot" className="underline">
             Forgot your password?
           </Link>

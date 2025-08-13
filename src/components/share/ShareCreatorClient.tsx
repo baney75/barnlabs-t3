@@ -10,7 +10,7 @@ import { api } from "~/trpc/react";
 
 const QRCode = dynamic(() => import("~/components/qr/QRCodeClient"), {
   ssr: false,
-}) as unknown as (p: { value: string; size?: number }) => JSX.Element;
+}) as unknown as (p: { value: string; size?: number }) => React.ReactElement;
 
 type Mode = "existing" | "url";
 
@@ -55,7 +55,6 @@ export default function ShareCreatorClient() {
           <Button onClick={() => navigator.clipboard.writeText(shareLink)}>
             Copy
           </Button>
-          {/* @ts-expect-error next/link JSX type */}
           <Link href={`/s/${shareId}`} className="underline">
             Open
           </Link>

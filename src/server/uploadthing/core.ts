@@ -1,58 +1,64 @@
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unused-vars */
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
-import { z } from "zod";
 import { auth } from "~/server/auth";
 import { db } from "~/server/db";
 
 const f = createUploadthing();
 
-export const fileRouter = {
+export const ourFileRouter = {
   modelFiles: f({
-    "model/gltf-binary": { maxFileSize: "500MB" },
-    "application/octet-stream": { maxFileSize: "500MB" },
-    "model/vnd.usdz+zip": { maxFileSize: "500MB" },
+    "model/gltf-binary": { maxFileSize: "64MB", maxFileCount: 1 },
+    "application/octet-stream": { maxFileSize: "64MB", maxFileCount: 1 },
   })
-    .middleware(async () => {
+    .middleware(async ({ req }) => {
       const session = await auth();
-      if (!session?.user) throw new UploadThingError("UNAUTHORIZED");
+      if (!session?.user) {
+        throw new UploadThingError("Unauthorized");
+      }
       return { userId: session.user.id };
     })
     .onUploadComplete(async ({ metadata, file }) => {
-      // Persist metadata for convenience; client will link via tRPC as well
-      await db.dashboardAsset.create({
+      console.log("Upload complete for userId:", metadata.userId);
+      console.log("File URL:", file.url);
+
+      const userId = metadata.userId;
+      const key = file.key;
+      const type = file.type;
+      const name = file.name ?? file.key;
+
+      // Store in database  
+      await db.model.create({
         data: {
-          ownerId: metadata.userId,
-          storageId: file.key,
-          fileType: file.type ?? "application/octet-stream",
-          fileName: file.name ?? file.key,
+          title: name,
+          description: `Uploaded ${type} model`,
+          ownerId: userId,
+          glbStorageId: file.key, // Store the key as storageId
+          usdzStorageId: null,
         },
       });
-      return {
-        key: file.key,
-        url: file.url,
-        type: file.type,
-        size: (file as any).size ?? 0,
-      };
+
+      return { uploadedBy: metadata.userId };
     }),
-  imageFiles: f({
-    "image/*": { maxFileSize: "10MB" },
-  })
-    .middleware(async () => {
+
+  imageFiles: f({ image: { maxFileSize: "4MB", maxFileCount: 1 } })
+    .middleware(async ({ req }) => {
       const session = await auth();
-      if (!session?.user) throw new UploadThingError("UNAUTHORIZED");
+      if (!session?.user) {
+        throw new UploadThingError("Unauthorized");
+      }
       return { userId: session.user.id };
     })
     .onUploadComplete(async ({ metadata, file }) => {
-      await db.dashboardAsset.create({
-        data: {
-          ownerId: metadata.userId,
-          storageId: file.key,
-          fileType: file.type ?? "image/*",
-          fileName: file.name ?? file.key,
-        },
-      });
+      console.log("Image upload complete for userId:", metadata.userId);
+
+      const userId = metadata.userId;
+      const key = file.key;
+      const type = file.type;
+      const name = file.name ?? file.key;
+
       return { key: file.key, url: file.url, type: file.type };
     }),
 } satisfies FileRouter;
 
-export type OurFileRouter = typeof fileRouter;
+export type OurFileRouter = typeof ourFileRouter;

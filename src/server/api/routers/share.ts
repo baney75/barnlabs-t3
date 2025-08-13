@@ -9,7 +9,7 @@ export const shareRouter = createTRPCRouter({
         data: {
           title: input.title,
           description: input.description,
-          ownerId: ctx.session.user.id,
+          ownerId: ctx.session!.user.id,
           modelId: input.modelId,
           modelUrl: input.modelUrl,
         },

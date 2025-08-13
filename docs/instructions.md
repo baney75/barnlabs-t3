@@ -59,6 +59,18 @@ Vercel is our hosting and deployment platform. All interactions should be done t
 
 - To list existing variables, use `vercel env ls`.
 
+**Required Environment Variables:**
+- `DATABASE_URL` - Neon PostgreSQL connection string
+- `UPLOADTHING_TOKEN` - UploadThing API token for file uploads
+- `RESEND_API_KEY` - Resend service for password reset emails  
+- `RESEND_FROM_EMAIL` - From email address for notifications
+- `WEB3FORMS_ACCESS_KEY` - Contact form submission service
+- `AUTH_SECRET` - NextAuth.js session encryption secret
+- `GOOGLE_CLIENT_ID` - Google OAuth client ID
+- `GOOGLE_CLIENT_SECRET` - Google OAuth client secret
+- `AUTH_URL` - Base URL for NextAuth callbacks (http://localhost:3000 for dev)
+- `PUB_URL` - Public production URL (barnlabs.net)
+
 ### **Deployments**
 
 - **Production:** Deployments to production happen automatically when a PR is merged into the `main` branch.
@@ -93,5 +105,30 @@ export const generateUploadUrl = protectedProcedure
 
 - When a significant new feature or system is added (e.g., a new third-party integration, a complex data flow), a new Markdown file must be added to the `/docs` directory.
 - This document should explain the high-level architecture, the decisions made, and any potential trade-offs. It should be written for a future developer (human or AI) who has no prior context.
+
+## **4. Key Implementation Details**
+
+### **Admin Bootstrap Process**
+- If no admin user exists in the database, the app triggers an admin setup process
+- In development: Bootstrap token is logged to console
+- In production: Bootstrap token is sent via email using Resend
+- Admin user is created by submitting the token along with email/password
+
+### **File Upload System**
+- UploadThing handles all file uploads with 500MB limit per file
+- Model files (.glb, .usdz) supported with automatic USDZ suggestion for GLB > 25MB
+- Image uploads for user dashboard logos up to 4MB
+
+### **3D Model & AR/VR Features**
+- React Three Fiber powers the web 3D model viewer
+- iOS AR Quick Look integration via `.usdz` files
+- Google Scene Viewer for Android AR via `.glb` files
+- VR 360 viewer available at `/vr360.html` using A-Frame
+
+### **Dashboard System**
+- Drag-and-drop grid layout using react-grid-layout
+- Live Markdown preview with secure HTML sanitization
+- Support for Model, Video, PDF, and Markdown card types
+- User logo/icon customization with real-time preview
 
 This document serves as the single source of truth for development practices. It should be updated as our tools and processes evolve.

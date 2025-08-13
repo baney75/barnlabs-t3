@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-explicit-any */
 import { useState, useMemo } from "react";
 import dynamic from "next/dynamic";
 // Suppress type friction for React 19
@@ -14,15 +15,31 @@ import { Textarea } from "~/components/ui/textarea";
 import { api } from "~/trpc/react";
 
 const ResponsiveGridLayout = dynamic(
-  async () => (await import("react-grid-layout")).Responsive as any,
+  async () => (await import("react-grid-layout")).Responsive,
   { ssr: false },
 );
 const WidthProvider = dynamic(
-  async () => (await import("react-grid-layout")).WidthProvider as any,
+  async () => (await import("react-grid-layout")).WidthProvider,
   { ssr: false },
 );
-const RGL = (props: any) => {
-  const Comp: any = useMemo(
+
+interface LayoutItem {
+  i: string;
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+const RGL = (props: {
+  className?: string;
+  rowHeight?: number;
+  cols?: Record<string, number>;
+  layouts?: Record<string, LayoutItem[]>;
+  onLayoutChange?: (layout: LayoutItem[]) => void;
+  children?: React.ReactNode;
+}) => {
+  const Comp = useMemo(
     () => (WidthProvider as any)(ResponsiveGridLayout as any),
     [],
   );
@@ -96,10 +113,10 @@ export default function DashboardClient({
             h: c.h,
           })),
         }}
-        onLayoutChange={(layout: any[]) => {
+        onLayoutChange={(layout: LayoutItem[]) => {
           setContent((prev) => ({
             cards: prev.cards.map((c) => {
-              const l = layout.find((i) => i.i === c.id);
+              const l = layout.find((item) => item.i === c.id);
               return l ? { ...c, x: l.x, y: l.y, w: l.w, h: l.h } : c;
             }),
           }));
@@ -120,7 +137,7 @@ export default function DashboardClient({
                 {card.type === "markdown" && (
                   <div className="grid gap-2 md:grid-cols-2">
                     <Textarea
-                      defaultValue={card.data?.md ?? ""}
+                      defaultValue={String(card.data?.md ?? "")}
                       onChange={(e) => {
                         const md = e.target.value;
                         setContent((prev) => ({
@@ -148,7 +165,7 @@ export default function DashboardClient({
                   <div className="space-y-2">
                     <Input
                       placeholder="YouTube URL"
-                      defaultValue={card.data?.url ?? ""}
+                      defaultValue={String(card.data?.url ?? "")}
                       onChange={(e) =>
                         setContent((prev) => ({
                           cards: prev.cards.map((c) =>
@@ -179,7 +196,7 @@ export default function DashboardClient({
                   <div className="h-full">
                     <Input
                       placeholder="/path/to.pdf"
-                      defaultValue={card.data?.src ?? ""}
+                      defaultValue={String(card.data?.src ?? "")}
                       onChange={(e) =>
                         setContent((prev) => ({
                           cards: prev.cards.map((c) =>
@@ -206,7 +223,7 @@ export default function DashboardClient({
                   <div className="space-y-2">
                     <Input
                       placeholder="/Earth_Model.glb"
-                      defaultValue={card.data?.src ?? ""}
+                      defaultValue={String(card.data?.src ?? "")}
                       onChange={(e) =>
                         setContent((prev) => ({
                           cards: prev.cards.map((c) =>

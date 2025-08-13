@@ -11,7 +11,7 @@ export async function POST(req: Request) {
       token: string;
     };
     const caller = createCaller(async () =>
-      createTRPCContext({ headers: req.headers as Headers }),
+      createTRPCContext({ headers: req.headers }),
     );
     const result = await caller.auth.completeAdminBootstrap(body);
     return NextResponse.json(result);

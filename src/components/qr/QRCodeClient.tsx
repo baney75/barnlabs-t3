@@ -5,7 +5,7 @@
 import { QRCodeSVG } from "qrcode.react";
 
 export default function QRCodeClient(props: { value: string; size?: number }) {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+   
   return <QRCodeSVG {...props} />;
 }
 

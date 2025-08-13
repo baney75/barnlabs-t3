@@ -9,12 +9,7 @@ import { Label } from "~/components/ui/label";
 import { Textarea } from "~/components/ui/textarea";
 
 export default async function Home() {
-  const hello = await api.post.hello({ text: "from BarnLabs" });
   const session = await auth();
-
-  if (session?.user) {
-    void api.post.getLatest.prefetch();
-  }
 
   return (
     <HydrateClient>
@@ -28,7 +23,9 @@ export default async function Home() {
             <h1 className="[font-family:var(--font-display)] text-4xl md:text-5xl">
               Unlock Deeper Understanding Through Immersive Learning
             </h1>
-            <p className="opacity-90">{hello?.greeting}</p>
+            <p className="opacity-90">
+              Transforming education through immersive 3D experiences.
+            </p>
 
             <div className="rounded-md bg-[color:var(--color-goals-bg)] p-4 text-[color:var(--color-header-text)]">
               <div className="font-semibold">Our Goals</div>

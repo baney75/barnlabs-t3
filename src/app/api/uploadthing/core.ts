@@ -1,4 +1,4 @@
 export {
-  fileRouter as GET,
-  fileRouter as POST,
+  GET,
+  POST,
 } from "~/server/uploadthing/next-handler";

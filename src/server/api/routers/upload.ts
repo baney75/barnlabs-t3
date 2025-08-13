@@ -17,7 +17,7 @@ export const uploadRouter = createTRPCRouter({
         data: {
           title: input.title,
           description: input.description,
-          ownerId: ctx.session.user.id,
+          ownerId: ctx.session!.user.id,
           glbStorageId: input.fileKeyGlb,
           usdzStorageId: input.fileKeyUsdz,
         },

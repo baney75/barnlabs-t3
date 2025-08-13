@@ -19,7 +19,7 @@ export default function UploadPanel({
     (res: Array<{ key: string; url: string; type?: string }>) => {
       if (res?.[0]) {
         setLast(res[0]);
-        onComplete?.(res[0]!);
+        onComplete?.(res[0]);
       }
     },
     [onComplete],
@@ -27,7 +27,7 @@ export default function UploadPanel({
 
   return (
     <div className="space-y-3">
-      <UploadButton<OurFileRouter>
+      <UploadButton<OurFileRouter, "modelFiles">
         endpoint="modelFiles"
         onClientUploadComplete={handleComplete}
         appearance={{
