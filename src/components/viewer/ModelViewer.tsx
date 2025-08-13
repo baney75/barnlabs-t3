@@ -1,6 +1,7 @@
 "use client";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Stage, useGLTF } from "@react-three/drei";
+import * as React from "react";
 import { Suspense } from "react";
 // Relax types when local env lacks @types/three
 type GLTFResult = { scene: object };
@@ -20,6 +21,26 @@ function isAndroid() {
 }
 
 type ViewerBackground = "transparent" | "light" | "dark" | "studio" | "outdoor";
+
+class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean }> {
+  constructor(props: { children: React.ReactNode }) {
+    super(props);
+    this.state = { hasError: false };
+  }
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <group>
+          {/* Empty fallback for 3D scene */}
+        </group>
+      );
+    }
+    return this.props.children;
+  }
+}
 
 export default function ModelViewer({
   src,
@@ -48,7 +69,9 @@ export default function ModelViewer({
           <ambientLight intensity={1.2} />
           <Stage intensity={0.3} environment={stageEnv as any}>
             <Suspense fallback={null}>
-              <GLB src={src} />
+              <ErrorBoundary>
+                <GLB src={src} />
+              </ErrorBoundary>
             </Suspense>
           </Stage>
           <OrbitControls enablePan={false} />

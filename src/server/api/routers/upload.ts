@@ -17,7 +17,7 @@ export const uploadRouter = createTRPCRouter({
         data: {
           title: input.title,
           description: input.description,
-          ownerId: ctx.session!.user.id,
+          ownerId: ctx.session.user.id,
           glbStorageId: input.fileKeyGlb,
           usdzStorageId: input.fileKeyUsdz,
         },
@@ -28,5 +28,26 @@ export const uploadRouter = createTRPCRouter({
     .query(async ({ input }) => {
       // If GLB > 25MB, suggest USDZ companion for iOS AR
       return { requireUsdz: input.glbSizeBytes > 25 * 1024 * 1024 };
+    }),
+
+  deleteModel: protectedProcedure
+    .input(z.object({ id: z.string().cuid() }))
+    .mutation(async ({ ctx, input }) => {
+      const role = (ctx.session?.user as { role?: "USER" | "EMPLOYEE" | "ADMIN" } | undefined)?.role;
+      const model = await ctx.db.model.findUnique({ where: { id: input.id } });
+      if (!model) return { ok: false };
+      const owned = model.ownerId === ctx.session.user.id;
+      if (!(owned || role === "ADMIN" || role === "EMPLOYEE")) {
+        throw new Error("FORBIDDEN");
+      }
+      await ctx.db.model.delete({ where: { id: input.id } });
+      await ctx.db.auditLog.create({
+        data: {
+          actorId: ctx.session.user.id,
+          event: "FILE_DELETED",
+          details: { modelId: input.id, ownerId: model.ownerId },
+        },
+      });
+      return { ok: true };
     }),
 });

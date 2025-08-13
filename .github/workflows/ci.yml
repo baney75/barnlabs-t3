@@ -37,4 +37,9 @@ jobs:
         env:
           NEXTAUTH_URL: http://localhost:3000
 
+      - name: Tests (Playwright)
+        run: pnpm test -- --reporter=list
+        env:
+          NEXTAUTH_URL: http://localhost:3000
+
 
