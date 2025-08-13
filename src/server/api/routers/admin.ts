@@ -6,7 +6,9 @@ export const adminRouter = createTRPCRouter({
     return ctx.db.user.findMany({ orderBy: { createdAt: "desc" } });
   }),
   setRole: adminProcedure
-    .input(z.object({ userId: z.string().cuid(), role: z.enum(["USER", "ADMIN"]) }))
+    .input(
+      z.object({ userId: z.string().cuid(), role: z.enum(["USER", "ADMIN"]) }),
+    )
     .mutation(async ({ ctx, input }) => {
       return ctx.db.user.update({
         where: { id: input.userId },
@@ -14,5 +16,3 @@ export const adminRouter = createTRPCRouter({
       });
     }),
 });
-
-
