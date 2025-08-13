@@ -1,68 +1,79 @@
-# BarnLabs Developer & AI Guidelines
+# BarnLabs Developer & AI Guidelines (v3.1)
 
-This document provides the official guidelines for developing and maintaining the BarnLabs application. Adhering to these standards is crucial for maintaining code quality, ensuring smooth collaboration, and enabling future AI agents to effectively contribute to the project.
+This document provides the official guidelines for developing and maintaining the BarnLabs application. As a **T3 Stack** project, it adheres to specific conventions that are crucial for maintaining code quality, ensuring full-stack type-safety, and enabling smooth collaboration.
+
+The core philosophy is **simplicity** and **modularity**. We use a curated set of powerful technologies to build scalable applications without being overly complex.
+
+## **0. Project Setup & Installation (T3 Stack / pnpm)**
+
+Before starting, ensure the project is correctly set up. These steps are mandatory to avoid common dependency, environment, and build errors.
+
+1.  **Install pnpm**: If you don't have pnpm, install it globally first. It's the recommended package manager for T3 projects for its efficiency.
+
+    ```powershell
+    # Install pnpm using npm
+    npm install -g pnpm
+    ```
+
+2.  **Clean and Install Dependencies**: Mismatched or outdated packages are the primary source of the current errors.
+
+    ```powershell
+    # It's recommended to remove old node_modules and the lock file first
+    rm -r node_modules
+    rm pnpm-lock.yaml
+
+    # Now, perform a clean install with pnpm
+    pnpm install
+    ```
+
+3.  **Configure Environment Variables**:
+    - Copy the `.env.example` file to a new file named `.env.local`.
+    - Populate `.env.local` with the necessary secrets from your team's password manager or the provided `/.secrets/secrets.md` file.
+    - **Crucially**, ensure `NEXTAUTH_URL` matches your local development URL exactly (e.g., `NEXTAUTH_URL=http://localhost:3000`). If your terminal shows the app is running on a different port, you must update this value.
+
+4.  **Generate Prisma Client**: After any dependency changes, you must regenerate the Prisma client to ensure your database queries are type-safe.
+
+    ```powershell
+    pnpm prisma generate
+    ```
+
+5.  **Seed the Database (Optional but Recommended)**: To populate your local database with initial data, run the seed script.
+    ```powershell
+    pnpm prisma db seed
+    ```
+6.  **Run the Development Server**: To start the Next.js application, run:
+    ```powershell
+    pnpm dev
+    ```
 
 ## **1. Git Workflow**
 
-A clean Git history is essential. Follow these rules for all contributions.
+(This section remains the same as standard Git practices apply.)
 
 ### **Branching**
 
 - Never commit directly to the `main` branch.
 - Create a new feature branch from `main` for every new task (e.g., `feat/add-contact-form`, `fix/header-overflow`).
-- Use a logical, kebab-case naming convention: `<type>/<short-description>`.
-  - **`feat`**: For new features.
-  - **`fix`**: For bug fixes.
-  - **`refactor`**: For code improvements that don't change functionality.
-  - **`docs`**: For documentation changes.
 
 ### **Commit Messages**
 
-All commit messages must follow the **Conventional Commits** specification. This makes the history readable and enables automatic versioning.
-
-**Format:** `<type>(<scope>): <short description>`
-
-- **`<type>`**: Must be one of `feat`, `fix`, `refactor`, `docs`, `style`, `test`, `chore`.
-- **`<scope>`** (optional): The part of the codebase affected (e.g., `auth`, `dashboard`, `admin`).
-- **`<short description>`**: A concise, imperative-mood summary (e.g., "add user deletion button," not "added a button").
-
-**Examples:**
-
-- `feat(auth): implement google oauth provider`
-- `fix(dashboard): prevent text overflow on mobile cards`
-- `docs(readme): update setup instructions`
-- `refactor(api): simplify model query logic`
+- All commit messages must follow the **Conventional Commits** specification.
+  **Format:** `<type>(<scope>): <short description>`
 
 ### **Pushing and Pull Requests (PRs)**
 
-- Push your feature branch to the remote repository regularly.
-- When your feature is complete and tested, open a Pull Request to merge your branch into `main`.
-- The PR description should clearly explain _what_ the change is and _why_ it was made. Reference any relevant issue numbers.
+- Open a Pull Request to merge your feature branch into `main`. The PR description should clearly explain the _what_ and the _why_.
 - All automated checks (linting, tests, Vercel preview build) must pass before a PR can be merged.
 
-## **2. Vercel Usage**
+## **2. Vercel Usage & Environment Variables**
 
-Vercel is our hosting and deployment platform. All interactions should be done through the Git workflow or the Vercel CLI.
+Vercel is our hosting and deployment platform.
 
-### **Environment Variables**
+### **Required Environment Variables**
 
-- **NEVER** commit secrets or environment variables to the Git repository. Refer to the local `/.secrets/secrets.md` file for key values.
-- To add a new secret, use the Vercel CLI:
-
-  ```bash
-  # Add a secret to all environments (development, preview, production)
-  vercel env add MY_API_KEY
-
-  # Add a secret ONLY to production
-  vercel env add MY_API_KEY production
-  ```
-
-- To list existing variables, use `vercel env ls`.
-
-**Required Environment Variables:**
 - `DATABASE_URL` - Neon PostgreSQL connection string
 - `UPLOADTHING_TOKEN` - UploadThing API token for file uploads
-- `RESEND_API_KEY` - Resend service for password reset emails  
+- `RESEND_API_KEY` - Resend service for password reset emails
 - `RESEND_FROM_EMAIL` - From email address for notifications
 - `WEB3FORMS_ACCESS_KEY` - Contact form submission service
 - `AUTH_SECRET` - NextAuth.js session encryption secret
@@ -72,64 +83,59 @@ Vercel is our hosting and deployment platform. All interactions should be done t
 - `AUTH_URL` - Legacy/compat base URL for callbacks (keep aligned with NEXTAUTH_URL)
 - `PUB_URL` - Public production URL (barnlabs.net)
 
-### **Deployments**
+### **Managing Secrets**
 
-- **Production:** Deployments to production happen automatically when a PR is merged into the `main` branch.
-- **Previews:** Every push to a feature branch automatically generates a unique preview deployment. Use these preview URLs for testing and review.
+- **NEVER** commit secrets or environment variables (`.env.local`) to the Git repository.
+- To add a new secret for deployment, use the Vercel CLI:
+  ```bash
+  # Add a secret to all environments (development, preview, production)
+  pnpm vercel env add MY_API_KEY
+  ```
 
 ## **3. Documentation Standards**
 
-Good documentation is a feature. It is a requirement for both human developers and future AI agents who will work on this codebase.
+(This section remains the same.)
 
-### **Code Comments**
+## **4. Key Implementation Details & Best Practices**
 
-- Use comments to explain the **"why,"** not the "what." The code itself should clearly explain what it does. Comments should explain the reasoning behind a complex decision or a non-obvious implementation.
-- Use JSDoc syntax for all tRPC procedures, complex functions, and React components to describe their purpose, parameters, and return values.
+### **tRPC API Best Practices (IMPORTANT)**
 
-**Example:**
+The codebase has multiple `implicit any` errors. This happens when TypeScript can't infer the types for your procedure's context (`ctx`) or input (`input`). **Always explicitly type them to ensure full-stack type safety**, which is a core tenet of the T3 Stack.
+
+**Correct (Explicit Types):**
 
 ```typescript
-/**
- * Generates a pre-signed URL for uploading an asset to Cloudflare R2.
- * This procedure is rate-limited to prevent abuse.
- * @param input - An object containing the desired filename and content type.
- * @returns A secure URL for the client to upload the file to directly.
- */
-export const generateUploadUrl = protectedProcedure
-  .input(z.object({ fileName: z.string(), contentType: z.string() }))
-  .mutation(async ({ ctx, input }) => {
-    // ...implementation
-  });
+import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import { type AppRouter } from "~/server/api/root";
+import { type inferRouterInputs, type inferRouterOutputs } from "@trpc/server";
+import { z } from "zod";
+
+// Define these types once per router file for easy inference
+type RouterInput = inferRouterInputs<AppRouter>;
+type RouterOutput = inferRouterOutputs<AppRouter>;
+
+export const modelRouter = createTRPCRouter({
+  /**
+   * Fetches all models belonging to the currently authenticated user.
+   */
+  listMine: protectedProcedure.query(async ({ ctx }) => {
+    // 'ctx.session.user' is now fully typed and safe to access.
+    return ctx.db.model.findMany({
+      where: { userId: ctx.session.user.id },
+    });
+  }),
+
+  /**
+   * Fetches a single model by its ID, ensuring it belongs to the user.
+   * @param input - An object containing the model ID.
+   */
+  byId: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ ctx, input }) => {
+      // 'input.id' is strongly typed via inference.
+      return ctx.db.model.findFirst({
+        where: { id: input.id, userId: ctx.session.user.id },
+      });
+    }),
+});
 ```
-
-### **Architectural Documentation**
-
-- When a significant new feature or system is added (e.g., a new third-party integration, a complex data flow), a new Markdown file must be added to the `/docs` directory.
-- This document should explain the high-level architecture, the decisions made, and any potential trade-offs. It should be written for a future developer (human or AI) who has no prior context.
-
-## **4. Key Implementation Details**
-
-### **Admin Bootstrap Process**
-- If no admin user exists in the database, the app triggers an admin setup process
-- In development: Bootstrap token is logged to console
-- In production: Bootstrap token is sent via email using Resend
-- Admin user is created by submitting the token along with email/password
-
-- UploadThing handles all file uploads with an effective limit of ~300MB per file (tunable)
-- Model files (.glb, .usdz) are supported. Automatic USDZ suggestion for GLB > 25MB; for large models request users upload the corresponding USDZ/GLB pair and link them
-- Image uploads for user dashboard logos up to 4MB
-
-### **3D Model & AR/VR Features**
-- React Three Fiber powers the web 3D model viewer
-- iOS AR Quick Look integration via `.usdz` files
-- Google Scene Viewer for Android AR via intent URL (with web fallback), not a raw download link
-- VR viewer: improved WebXR-capable viewer planned; basic `/vr360.html` exists as a fallback
-
-### **Dashboard System**
-- Drag-and-drop grid layout using react-grid-layout
-- Live Markdown preview with secure HTML sanitization
-- Support for Model, Video, PDF, and Markdown card types
-- User logo/icon customization with real-time preview
-- Per-user scoping for assets and dashboards; admins can access all, employees have elevated assistance permissions
-
-This document serves as the single source of truth for development practices. It should be updated as our tools and processes evolve.

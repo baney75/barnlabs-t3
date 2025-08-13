@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access */
 import {
   defaultShouldDehydrateQuery,
   QueryClient,
@@ -16,7 +16,7 @@ export const createQueryClient = () =>
       dehydrate: {
         serializeData: SuperJSON.serialize,
         shouldDehydrateQuery: (query: any) =>
-          defaultShouldDehydrateQuery(query as any) ||
+          defaultShouldDehydrateQuery(query) ||
           query.state.status === "pending",
       },
       hydrate: {
