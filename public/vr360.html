@@ -58,7 +58,7 @@
 
     <script>
       const p = new URLSearchParams(location.search);
-      const model = p.get("src") || p.get("model");
+      const model = (p.get("src") || p.get("model")) + (location.search.includes("v=") ? "" : "?v=1");
 
       (function init() {
         if (!model) return;

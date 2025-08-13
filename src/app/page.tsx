@@ -46,7 +46,7 @@ export default async function Home({
             <div className="mt-3 flex flex-wrap gap-2">
               <a
                 rel="ar"
-                href="/Earth_Model.usdz"
+                href="/Earth_Model.usdz?v=1"
                 className="rounded-md bg-white px-3 py-1 text-sm text-black"
               >
                 View in AR (iOS)
@@ -58,7 +58,7 @@ export default async function Home({
                 View in AR (Android)
               </a>
               <a
-                href={`/vr360.html?src=${encodeURIComponent("/Earth_Model.glb")}`}
+                href={`/vr360.html?src=${encodeURIComponent("/Earth_Model.glb?v=1")}`}
                 target="_blank"
                 className="rounded-md bg-white px-3 py-1 text-sm text-black"
               >

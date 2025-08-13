@@ -53,7 +53,7 @@ export default function TrecfPage() {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           <div>
             <h2 className="mb-3 [font-family:var(--font-display)] text-2xl">Featured 3D Model: S.S. Dean Richmond</h2>
-            <ModelViewer src="/dean_richmond.glb" usdz="/dean_richmond.usdz" background="studio" />
+            <ModelViewer src="/dean_richmond.glb?v=1" usdz="/dean_richmond.usdz?v=1" background="studio" />
             <p className="mt-2 text-sm opacity-80">
               Model courtesy of <a href="https://3dshipwrecks.org" target="_blank" className="underline">3DShipwrecks</a>.
             </p>
