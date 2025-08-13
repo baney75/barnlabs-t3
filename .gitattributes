@@ -1,2 +1,2 @@
-public/*.glb filter=lfs diff=lfs merge=lfs -text
-public/*.usdz filter=lfs diff=lfs merge=lfs -text
+public/dean_richmond.glb filter=lfs diff=lfs merge=lfs -text
+public/dean_richmond.usdz filter=lfs diff=lfs merge=lfs -text
