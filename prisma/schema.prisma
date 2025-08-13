@@ -56,6 +56,8 @@ model User {
     models        Model[]
     dashboards    Dashboard[]
     dashboardAssets DashboardAsset[]
+    createdAt     DateTime  @default(now())
+    updatedAt     DateTime  @updatedAt
 }
 
 model VerificationToken {
@@ -99,4 +101,15 @@ model DashboardAsset {
     createdAt  DateTime @default(now())
 
     @@index([ownerId])
+}
+
+model PasswordResetToken {
+    id        String   @id @default(cuid())
+    token     String   @unique
+    userId    String
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    expiresAt DateTime
+    createdAt DateTime @default(now())
+
+    @@index([userId])
 }

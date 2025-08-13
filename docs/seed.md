@@ -196,4 +196,4 @@ This is the final phase to bring the application to production.
 
 ### **6.3: Documentation Review**
 
-- **Action:** Ensure `docs/instructions.md` is updated and `docs/seed.md` is deleted after used through. 
+- **Action:** Ensure `docs/instructions.md` is updated and `docs/seed.md` is deleted after used through.

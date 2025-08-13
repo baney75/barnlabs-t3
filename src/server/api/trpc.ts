@@ -131,3 +131,16 @@ export const protectedProcedure = t.procedure
       },
     });
   });
+
+/**
+ * Admin-only (authorized) procedure
+ *
+ * Ensures the session exists and the user has an ADMIN role.
+ */
+export const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
+  const isAdmin = ctx.session.user?.role === "ADMIN";
+  if (!isAdmin) {
+    throw new TRPCError({ code: "FORBIDDEN" });
+  }
+  return next();
+});
