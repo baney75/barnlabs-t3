@@ -1,9 +1,5 @@
-import dynamic from "next/dynamic";
-
-const DashboardClient = dynamic(
-  () => import("~/components/dashboard/DashboardClient"),
-  { ssr: false },
-);
+"use client";
+import DashboardClient from "~/components/dashboard/DashboardClient";
 
 type CardType = "markdown" | "model" | "video" | "pdf";
 interface CardDef {
