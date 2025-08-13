@@ -8,7 +8,11 @@ import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Textarea } from "~/components/ui/textarea";
 
-export default async function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams?: Record<string, string | string[] | undefined>;
+}) {
   await auth();
 
   return (
@@ -113,6 +117,22 @@ export default async function Home() {
             <h2 className="mb-2 [font-family:var(--font-display)] text-3xl">
               Contact Us
             </h2>
+            {(() => {
+              const status =
+                typeof searchParams?.contact === "string"
+                  ? searchParams?.contact
+                  : undefined;
+              if (!status) return null;
+              return (
+                <div
+                  className={`mx-auto mb-4 w-fit rounded px-3 py-2 text-sm ${status === "success" ? "bg-green-600/20 text-green-200" : "bg-red-600/20 text-red-200"}`}
+                >
+                  {status === "success"
+                    ? "Message sent! We'll be in touch."
+                    : "There was a problem sending your message."}
+                </div>
+              );
+            })()}
             <p className="mb-6 opacity-90">
               Have a project or a question? Send us a message.
             </p>
@@ -150,11 +170,6 @@ export default async function Home() {
                   className="bg-white text-black placeholder:text-gray-500"
                 />
               </div>
-              <input
-                type="hidden"
-                name="access_key"
-                value="f73f7250-5451-499f-8e96-5669baece62c"
-              />
               <Button className="bg-[color:var(--color-contact-button-bg)] text-black">
                 Send
               </Button>

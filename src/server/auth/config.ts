@@ -32,46 +32,66 @@ declare module "next-auth" {
  *
  * @see https://next-auth.js.org/configuration/options
  */
+const providers = [
+  // Conditionally include Google only if configured
+  ...(env.GOOGLE_CLIENT_ID && env.GOOGLE_CLIENT_SECRET
+    ? [
+        Google({
+          clientId: env.GOOGLE_CLIENT_ID,
+          clientSecret: env.GOOGLE_CLIENT_SECRET,
+        }),
+      ]
+    : []),
+  Credentials({
+    name: "Credentials",
+    credentials: {
+      email: { label: "Email", type: "email" },
+      password: { label: "Password", type: "password" },
+    },
+    authorize: async (credentials) => {
+      const email = credentials?.email as string | undefined;
+      const password = credentials?.password as string | undefined;
+      if (!email || !password) return null;
+      const user = await db.user.findUnique({
+        where: { email },
+      });
+      if (!user?.passwordHash) return null;
+      const valid = await compare(password, user.passwordHash);
+      if (!valid) return null;
+      return { id: user.id, name: user.name, email: user.email };
+    },
+  }),
+] as NextAuthConfig["providers"];
+
 export const authConfig = {
   trustHost: true,
   session: {
     strategy: "jwt",
   },
-  providers: [
-    Google({
-      clientId: env.GOOGLE_CLIENT_ID ?? "",
-      clientSecret: env.GOOGLE_CLIENT_SECRET ?? "",
-    }),
-    Credentials({
-      name: "Credentials",
-      credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" },
-      },
-      authorize: async (credentials) => {
-        const email = credentials?.email as string | undefined;
-        const password = credentials?.password as string | undefined;
-        if (!email || !password) return null;
-        const user = await db.user.findUnique({
-          where: { email },
-        });
-        if (!user?.passwordHash) return null;
-        const valid = await compare(password, user.passwordHash);
-        if (!valid) return null;
-        return { id: user.id, name: user.name, email: user.email };
-      },
-    }),
-  ],
+  providers,
   adapter: PrismaAdapter(db),
   callbacks: {
-    session: ({ session, user }: { session: Session; user: User }) => ({
-      ...session,
-      user: {
-        ...session.user,
-        id: user.id,
-        role: (user as unknown as { role?: "USER" | "ADMIN" }).role,
-      },
-    }),
+    async jwt({ token, user }) {
+      if (user) {
+        // Persist custom fields on the token
+        (token as Record<string, unknown>).role = (
+          user as unknown as { role?: "USER" | "EMPLOYEE" | "ADMIN" }
+        ).role;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+          id: (token.sub ?? session.user!.id)!,
+          role: (token as unknown as { role?: "USER" | "EMPLOYEE" | "ADMIN" })
+            .role,
+        },
+      };
+    },
   },
   pages: {
     signIn: "/auth/signin",

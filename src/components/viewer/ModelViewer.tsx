@@ -17,12 +17,15 @@ function isIOS() {
 
 function isAndroid() {
   if (typeof navigator === "undefined") return false;
-  return navigator.userAgent.includes('Android');
+  return navigator.userAgent.includes("Android");
 }
 
 type ViewerBackground = "transparent" | "light" | "dark" | "studio" | "outdoor";
 
-class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean }> {
+class ErrorBoundary extends React.Component<
+  { children: React.ReactNode },
+  { hasError: boolean }
+> {
   constructor(props: { children: React.ReactNode }) {
     super(props);
     this.state = { hasError: false };
@@ -32,11 +35,7 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { has
   }
   render() {
     if (this.state.hasError) {
-      return (
-        <group>
-          {/* Empty fallback for 3D scene */}
-        </group>
-      );
+      return <group>{/* Empty fallback for 3D scene */}</group>;
     }
     return this.props.children;
   }
@@ -59,31 +58,47 @@ export default function ModelViewer({
       : background === "light"
         ? "#f5f5f5"
         : "#000000";
-  const stageEnv = background === "studio" ? "studio" : background === "outdoor" ? "city" : undefined;
+  const stageEnv =
+    background === "studio"
+      ? "studio"
+      : background === "outdoor"
+        ? "city"
+        : undefined;
 
   return (
     <div className="space-y-2">
-      <div className="h-[360px] rounded-lg">
-        <Canvas camera={{ position: [2.2, 1.2, 2.2], fov: 50 }}>
-          {background !== "transparent" && <color attach="background" args={[bgColor!]} />}
-          <ambientLight intensity={1.2} />
-          <Stage intensity={0.3} environment={stageEnv}>
+      <div className="h-[420px] rounded-lg">
+        <Canvas camera={{ position: [2.2, 1.2, 2.2], fov: 50 }} shadows>
+          {background !== "transparent" && (
+            <color attach="background" args={[bgColor!]} />
+          )}
+          <ambientLight intensity={0.8} />
+          <Stage intensity={0.6} environment={stageEnv} shadows="contact">
             <Suspense fallback={null}>
               <ErrorBoundary>
                 <GLB src={src} />
               </ErrorBoundary>
             </Suspense>
           </Stage>
-          <OrbitControls enablePan={false} />
+          <OrbitControls
+            enablePan={false}
+            enableDamping
+            dampingFactor={0.05}
+            autoRotate
+            autoRotateSpeed={0.5}
+          />
         </Canvas>
       </div>
       <div className="flex flex-wrap gap-2">
         {(() => {
-          const commonClass = "rounded-md bg-white px-3 py-1 text-sm text-black";
+          const commonClass =
+            "rounded-md bg-white px-3 py-1 text-sm text-black";
           if (isIOS()) {
             if (!usdz) {
               return (
-                <span className="text-sm opacity-70">USDZ not available for AR on iOS</span>
+                <span className="text-sm opacity-70">
+                  USDZ not available for AR on iOS
+                </span>
               );
             }
             return (

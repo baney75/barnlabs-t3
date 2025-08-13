@@ -13,14 +13,8 @@ export const env = createEnv({
         : z.string().optional(),
     DATABASE_URL: z.string().url(),
     // OAuth (Google)
-    GOOGLE_CLIENT_ID:
-      process.env.NODE_ENV === "production"
-        ? z.string()
-        : z.string().optional(),
-    GOOGLE_CLIENT_SECRET:
-      process.env.NODE_ENV === "production"
-        ? z.string()
-        : z.string().optional(),
+    GOOGLE_CLIENT_ID: z.string().optional(),
+    GOOGLE_CLIENT_SECRET: z.string().optional(),
     // Email
     RESEND_API_KEY: z.string().optional(),
     RESEND_FROM_EMAIL: z.string().optional(),
@@ -31,7 +25,8 @@ export const env = createEnv({
     // URLs
     PUB_URL: z.string().optional(),
     AUTH_URL: z.string().optional(),
-    NEXTAUTH_URL: z.string().url(),
+    // NEXTAUTH_URL is useful for some deployments but we can infer it if missing
+    NEXTAUTH_URL: z.string().url().optional(),
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
@@ -61,7 +56,13 @@ export const env = createEnv({
     WEB3FORMS_ACCESS_KEY: process.env.WEB3FORMS_ACCESS_KEY,
     PUB_URL: process.env.PUB_URL,
     AUTH_URL: process.env.AUTH_URL,
-    NEXTAUTH_URL: process.env.NEXTAUTH_URL,
+    // Prefer explicit NEXTAUTH_URL, otherwise fall back to AUTH_URL or VERCEL_URL
+    NEXTAUTH_URL:
+      process.env.NEXTAUTH_URL ??
+      process.env.AUTH_URL ??
+      (process.env.VERCEL_URL
+        ? `https://${process.env.VERCEL_URL}`
+        : undefined),
     NODE_ENV: process.env.NODE_ENV,
   },
   /**
