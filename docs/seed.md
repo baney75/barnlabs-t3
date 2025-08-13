@@ -2,7 +2,7 @@
 
 **Project:** BarnLabs Application V2
 **Objective:** To build a full-stack application from the current directory to production, migrating from the `old_codebase` to the T3 Stack.
-**Stack:** Next.js, Vercel, Neon (PostgreSQL/Prisma), Cloudflare R2, NextAuth.js, Tailwind CSS, React Three Fiber, shadcn/ui.
+**Stack:** Next.js, Vercel, Neon (PostgreSQL/Prisma), UploadThing, NextAuth.js, Tailwind CSS, React Three Fiber, shadcn/ui.
 
 ---
 
@@ -92,7 +92,7 @@ This phase builds the data models and server-side logic.
   - `modelRouter`: CRUD operations for 3D models.
   - `userRouter`: User profile management and dashboard content updates.
   - `adminRouter`: Protected procedures for all admin functions.
-  - `storageRouter`: Procedures to generate pre-signed URLs for uploads to Cloudflare R2.
+  - `uploadRouter`: UploadThing file routes (server) and client utilities for uploads.
 
 ### **2.3: Configure Authentication (`/server/auth.ts`)**
 
