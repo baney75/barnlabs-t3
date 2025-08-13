@@ -56,6 +56,7 @@ model User {
     models        Model[]
     dashboards    Dashboard[]
     dashboardAssets DashboardAsset[]
+    shares       Share[]
     passwordResetTokens PasswordResetToken[]
     createdAt     DateTime  @default(now())
     updatedAt     DateTime  @updatedAt
@@ -78,6 +79,7 @@ model Model {
     glbStorageId  String
     usdzStorageId String?
     createdAt     DateTime @default(now())
+    shares        Share[]
 
     @@index([ownerId])
 }
@@ -102,6 +104,22 @@ model DashboardAsset {
     createdAt  DateTime @default(now())
 
     @@index([ownerId])
+}
+
+model Share {
+    id          String   @id @default(cuid())
+    title       String
+    description String?
+    ownerId     String
+    owner       User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+    modelId     String?
+    model       Model?   @relation(fields: [modelId], references: [id])
+    modelUrl    String?
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+
+    @@index([ownerId])
+    @@index([modelId])
 }
 
 model PasswordResetToken {
