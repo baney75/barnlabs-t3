@@ -252,7 +252,9 @@ export default function ModelViewer({
         })()}
         {(() => {
           const needsProxy = /^https?:\/\/t3rgh6yjwx\.ufs\.sh\//.test(src);
-          const vrSrc = needsProxy ? `/api/models/proxy?url=${encodeURIComponent(src)}` : src;
+          const vrSrc = needsProxy
+            ? `/api/models/proxy?url=${encodeURIComponent(src)}`
+            : src;
           return (
             <a
               href={`/vr360.html?src=${encodeURIComponent(vrSrc)}`}

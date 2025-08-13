@@ -6,7 +6,7 @@ import { useGLTF, Html } from "@react-three/drei";
 import { type Group } from "three";
 
 const EARTH_GLB_URL_D = `/api/models/proxy?url=${encodeURIComponent(
-  "https://t3rgh6yjwx.ufs.sh/d/DGcq4LQh6E89nUUTez3rgOax2BzGHqujDRtWQswvYCIVlfkK?download=1&filename=Earth_Model.glb",
+  "https://t3rgh6yjwx.ufs.sh/f/DGcq4LQh6E89nUUTez3rgOax2BzGHqujDRtWQswvYCIVlfkK",
 )}`;
 
 function EarthFallback(props: React.JSX.IntrinsicElements["group"]) {

@@ -50,31 +50,59 @@ export default function NavBar() {
       {open && (
         <div className="md:hidden">
           <nav className="mx-auto max-w-6xl space-y-3 px-4 pb-4 text-sm">
-            <Link onClick={() => setOpen(false)} href="/trecf" className="block">
+            <Link
+              onClick={() => setOpen(false)}
+              href="/trecf"
+              className="block"
+            >
               TRECf
             </Link>
-            <Link onClick={() => setOpen(false)} href="#features" className="block">
+            <Link
+              onClick={() => setOpen(false)}
+              href="#features"
+              className="block"
+            >
               Features
             </Link>
-            <Link onClick={() => setOpen(false)} href="#contact" className="block">
+            <Link
+              onClick={() => setOpen(false)}
+              href="#contact"
+              className="block"
+            >
               Contact
             </Link>
             {session?.user && (
-              <Link onClick={() => setOpen(false)} href="/dashboard" className="block">
+              <Link
+                onClick={() => setOpen(false)}
+                href="/dashboard"
+                className="block"
+              >
                 Dashboard
               </Link>
             )}
             {isAdmin && (
-              <Link onClick={() => setOpen(false)} href="/admin" className="block">
+              <Link
+                onClick={() => setOpen(false)}
+                href="/admin"
+                className="block"
+              >
                 Admin
               </Link>
             )}
             {!session?.user ? (
-              <Link onClick={() => setOpen(false)} href="/auth/signin" className="block underline">
+              <Link
+                onClick={() => setOpen(false)}
+                href="/auth/signin"
+                className="block underline"
+              >
                 Sign in
               </Link>
             ) : (
-              <Link onClick={() => setOpen(false)} href="/api/auth/signout" className="block underline">
+              <Link
+                onClick={() => setOpen(false)}
+                href="/api/auth/signout"
+                className="block underline"
+              >
                 Sign out
               </Link>
             )}
