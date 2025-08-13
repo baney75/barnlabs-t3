@@ -2,7 +2,7 @@
 import * as React from "react";
 import { useRef, Suspense } from "react";
 import { useFrame } from "@react-three/fiber";
-import { useGLTF } from "@react-three/drei";
+import { useGLTF, Html } from "@react-three/drei";
 import { type Group } from "three";
 
 const EARTH_GLB_URL =
@@ -28,7 +28,10 @@ function EarthGLB() {
   return <primitive object={gltf.scene} />;
 }
 
-class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean }> {
+class ErrorBoundary extends React.Component<
+  { children: React.ReactNode },
+  { hasError: boolean }
+> {
   constructor(props: { children: React.ReactNode }) {
     super(props);
     this.state = { hasError: false };
@@ -42,10 +45,31 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { has
   }
 }
 
-export default function EarthModel(props: React.JSX.IntrinsicElements["group"]) {
+export default function EarthModel(
+  props: React.JSX.IntrinsicElements["group"],
+) {
   return (
     <ErrorBoundary>
-      <Suspense fallback={<EarthFallback {...props} />}> 
+      <Suspense
+        fallback={
+          <>
+            <EarthFallback {...props} />
+            <Html center>
+              <div className="w-48">
+                <div className="h-2 w-full rounded bg-white/20">
+                  <div
+                    className="h-2 rounded bg-white"
+                    style={{ width: "35%" }}
+                  />
+                </div>
+                <div className="mt-2 text-center text-xs text-white">
+                  Loading…
+                </div>
+              </div>
+            </Html>
+          </>
+        }
+      >
         <group {...props}>
           <EarthGLB />
         </group>

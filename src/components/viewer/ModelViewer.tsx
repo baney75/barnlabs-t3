@@ -1,6 +1,12 @@
 "use client";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Stage, useGLTF } from "@react-three/drei";
+import {
+  OrbitControls,
+  Stage,
+  useGLTF,
+  Html,
+  useProgress,
+} from "@react-three/drei";
 import * as React from "react";
 import { Suspense } from "react";
 // Relax types when local env lacks @types/three
@@ -65,6 +71,26 @@ export default function ModelViewer({
         ? "city"
         : undefined;
 
+  function LoaderBar() {
+    const { progress } = useProgress();
+    const pct = Math.round(progress);
+    return (
+      <Html center>
+        <div className="w-48">
+          <div className="h-2 w-full rounded bg-white/20">
+            <div
+              className="h-2 rounded bg-white"
+              style={{ width: `${pct}%` }}
+            />
+          </div>
+          <div className="mt-2 text-center text-xs text-white">
+            Loading {pct}%
+          </div>
+        </div>
+      </Html>
+    );
+  }
+
   return (
     <div className="space-y-2">
       <div className="h-[420px] rounded-lg">
@@ -74,7 +100,7 @@ export default function ModelViewer({
           )}
           <ambientLight intensity={0.8} />
           <Stage intensity={0.6} environment={stageEnv} shadows="contact">
-            <Suspense fallback={null}>
+            <Suspense fallback={<LoaderBar />}>
               <ErrorBoundary>
                 <GLB src={src} />
               </ErrorBoundary>
