@@ -6,6 +6,8 @@ import {
   useGLTF,
   Html,
   useProgress,
+  Bounds,
+  useBounds,
 } from "@react-three/drei";
 import * as React from "react";
 import { Suspense } from "react";
@@ -29,7 +31,7 @@ function isAndroid() {
 type ViewerBackground = "transparent" | "light" | "dark" | "studio" | "outdoor";
 
 class ErrorBoundary extends React.Component<
-  { children: React.ReactNode },
+  { children: React.ReactNode; onRetry?: () => void },
   { hasError: boolean }
 > {
   constructor(props: { children: React.ReactNode }) {
@@ -41,7 +43,27 @@ class ErrorBoundary extends React.Component<
   }
   render() {
     if (this.state.hasError) {
-      return <group>{/* Empty fallback for 3D scene */}</group>;
+      return (
+        <>
+          <group />
+          <Html fullscreen>
+            <div className="flex h-full w-full items-center justify-center bg-black/50">
+              <div className="rounded-md bg-black/80 p-4 text-white">
+                <div className="mb-2 text-sm">Failed to load model</div>
+                <button
+                  onClick={() => {
+                    this.setState({ hasError: false });
+                    this.props.onRetry?.();
+                  }}
+                  className="rounded bg-white/90 px-3 py-1 text-black"
+                >
+                  Retry
+                </button>
+              </div>
+            </div>
+          </Html>
+        </>
+      );
     }
     return this.props.children;
   }
@@ -58,51 +80,100 @@ export default function ModelViewer({
   title?: string;
   background?: ViewerBackground;
 }) {
+  const [envPreset, setEnvPreset] = React.useState<"studio" | "city" | "sunset" | "forest" | undefined>(
+    background === "studio" ? "studio" : background === "outdoor" ? "city" : undefined,
+  );
+  const [autoRotate, setAutoRotate] = React.useState(true);
+  const [reloadKey, setReloadKey] = React.useState(0);
   const bgColor =
     background === "transparent"
       ? undefined
       : background === "light"
         ? "#f5f5f5"
         : "#000000";
-  const stageEnv =
-    background === "studio"
-      ? "studio"
-      : background === "outdoor"
-        ? "city"
-        : undefined;
+  const stageEnv = envPreset;
 
   function LoaderBar() {
     const { progress } = useProgress();
-    const pct = Math.round(progress);
+    const pct = Math.max(1, Math.round(progress));
     return (
-      <Html center>
-        <div className="w-48">
-          <div className="h-2 w-full rounded bg-white/20">
-            <div
-              className="h-2 rounded bg-white"
-              style={{ width: `${pct}%` }}
-            />
-          </div>
-          <div className="mt-2 text-center text-xs text-white">
-            Loading {pct}%
+      <Html fullscreen>
+        <div className="flex h-full w-full items-center justify-center bg-black/50">
+          <div className="w-56 rounded-md bg-black/80 p-4 text-white">
+            <div className="h-2 w-full rounded bg-white/20">
+              <div className="h-2 rounded bg-white" style={{ width: `${pct}%` }} />
+            </div>
+            <div className="mt-2 text-center text-xs">Loading {pct}%</div>
           </div>
         </div>
       </Html>
     );
   }
 
+  function Toolbar({ onFit }: { onFit: () => void }) {
+    return (
+      <Html position={[0, 0, 0]} fullscreen>
+        <div className="pointer-events-auto absolute right-3 top-3 flex gap-2">
+          <button
+            className="rounded bg-white/90 px-2 py-1 text-xs text-black"
+            onClick={onFit}
+            title="Fit to view"
+          >
+            Fit
+          </button>
+          <button
+            className="rounded bg-white/90 px-2 py-1 text-xs text-black"
+            onClick={() => setAutoRotate((v) => !v)}
+            title="Toggle autorotate"
+          >
+            {autoRotate ? "Pause" : "Rotate"}
+          </button>
+          <select
+            className="rounded bg-white/90 px-2 py-1 text-xs text-black"
+            value={envPreset ?? "none"}
+            onChange={(e) => setEnvPreset(e.target.value === "none" ? undefined : (e.target.value as typeof envPreset))}
+            title="Environment"
+          >
+            <option value="none">Env: none</option>
+            <option value="studio">Env: studio</option>
+            <option value="city">Env: city</option>
+            <option value="sunset">Env: sunset</option>
+            <option value="forest">Env: forest</option>
+          </select>
+          <button
+            className="rounded bg-white/90 px-2 py-1 text-xs text-black"
+            onClick={() => setReloadKey((k) => k + 1)}
+            title="Reload model"
+          >
+            Reload
+          </button>
+        </div>
+      </Html>
+    );
+  }
+
+  function FitButtonOverlay() {
+    const api = useBounds();
+    return <Toolbar onFit={() => api.refresh().fit()} />;
+  }
+
   return (
     <div className="space-y-2">
       <div className="h-[420px] rounded-lg">
-        <Canvas camera={{ position: [2.2, 1.2, 2.2], fov: 50 }} shadows>
+        <Canvas camera={{ position: [2.2, 1.2, 2.2], fov: 50 }} dpr={[1, 2]} shadows>
           {background !== "transparent" && (
             <color attach="background" args={[bgColor!]} />
           )}
           <ambientLight intensity={0.8} />
           <Stage intensity={0.6} environment={stageEnv} shadows="contact">
             <Suspense fallback={<LoaderBar />}>
-              <ErrorBoundary>
-                <GLB src={src} />
+              <ErrorBoundary onRetry={() => setReloadKey((k) => k + 1)}>
+                <Bounds fit clip observe margin={1.1}>
+                  <group key={reloadKey}>
+                    <GLB src={src} />
+                  </group>
+                  <FitButtonOverlay />
+                </Bounds>
               </ErrorBoundary>
             </Suspense>
           </Stage>
@@ -110,7 +181,7 @@ export default function ModelViewer({
             enablePan={false}
             enableDamping
             dampingFactor={0.05}
-            autoRotate
+            autoRotate={autoRotate}
             autoRotateSpeed={0.5}
           />
         </Canvas>

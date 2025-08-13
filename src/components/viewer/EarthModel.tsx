@@ -7,8 +7,7 @@ import { type Group } from "three";
 
 const EARTH_GLB_URL_F =
   "https://t3rgh6yjwx.ufs.sh/f/DGcq4LQh6E89nUUTez3rgOax2BzGHqujDRtWQswvYCIVlfkK";
-const EARTH_GLB_URL_D =
-  "https://t3rgh6yjwx.ufs.sh/d/DGcq4LQh6E89nUUTez3rgOax2BzGHqujDRtWQswvYCIVlfkK?download=1&filename=Earth_Model.glb";
+const EARTH_GLB_URL_D = `/api/models/proxy?url=${encodeURIComponent(EARTH_GLB_URL_F)}`;
 
 function EarthFallback(props: React.JSX.IntrinsicElements["group"]) {
   const group = useRef<Group>(null);

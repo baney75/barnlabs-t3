@@ -58,7 +58,7 @@ export default async function Home({
                 View in AR (Android)
               </a>
               <a
-                href={`/vr360.html?src=${encodeURIComponent("https://t3rgh6yjwx.ufs.sh/f/DGcq4LQh6E89nUUTez3rgOax2BzGHqujDRtWQswvYCIVlfkK")}`}
+                href={`/vr360.html?src=${encodeURIComponent("/api/models/proxy?url=https://t3rgh6yjwx.ufs.sh/f/DGcq4LQh6E89nUUTez3rgOax2BzGHqujDRtWQswvYCIVlfkK")}`}
                 target="_blank"
                 className="rounded-md bg-white px-3 py-1 text-sm text-black"
               >
