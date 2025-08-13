@@ -2,6 +2,8 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Stage } from "@react-three/drei";
+import dynamic from "next/dynamic";
+const EarthModel = dynamic(() => import("~/components/viewer/EarthModel"), { ssr: false });
 
 import { LatestPost } from "~/app/_components/post";
 import { auth } from "~/server/auth";
@@ -65,10 +67,7 @@ export default async function Home() {
                 <color attach="background" args={["#000000"]} />
                 <ambientLight intensity={1.2} />
                 <Stage intensity={0.3}>
-                  <mesh>
-                    <sphereGeometry args={[1, 64, 64]} />
-                    <meshStandardMaterial color="#2d8cff" />
-                  </mesh>
+                  <EarthModel />
                 </Stage>
                 <OrbitControls enablePan={false} />
               </Canvas>
