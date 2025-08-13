@@ -52,13 +52,14 @@ export default function TrecfPage() {
       <section className="mx-auto max-w-6xl px-4 pb-14">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           <div>
-            <h2 className="mb-3 [font-family:var(--font-display)] text-2xl">Featured 3D Model: S.S. Dean Richmond</h2>
+            <h2 className="mb-3 [font-family:var(--font-display)] text-2xl">Featured 3D Model: SS Dean Richmond</h2>
             <ModelViewer
               src="https://t3rgh6yjwx.ufs.sh/f/DGcq4LQh6E89Co1yGNeldY0T6O4ZvbiLtsrpqA9PuzUwVMmx"
               usdz="https://t3rgh6yjwx.ufs.sh/f/DGcq4LQh6E89hu2KiSpvRJ2ubg0iEeqLh6flO9Pm5STDWYaB"
               background="studio"
             />
             <p className="mt-2 text-sm opacity-80">
+              SS Dean Richmond was a 238–239 ft wooden propeller steamer (built 1864) that foundered in an 1893 Lake Erie storm; 20 lives were lost. See details at the Regional Science Consortium: <a className="underline" target="_blank" href="https://www.regsciconsort.com/lake-erie-shipwrecks/dean-richmond/">Dean Richmond</a>.
               Model courtesy of <a href="https://3dshipwrecks.org" target="_blank" className="underline">3DShipwrecks</a>.
             </p>
             <div className="mt-4 rounded-md bg-[color:var(--color-goals-bg)] p-4 text-[color:var(--color-header-text)]">
