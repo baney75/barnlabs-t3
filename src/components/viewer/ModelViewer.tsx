@@ -76,7 +76,7 @@ export default function ModelViewer({
           <Stage intensity={0.6} environment={stageEnv} shadows="contact">
             <Suspense fallback={null}>
               <ErrorBoundary>
-                <GLB src={`${src}${src.includes('?') ? '&' : '?'}v=1`} />
+                <GLB src={`${src}${src.includes("?") ? "&" : "?"}v=1`} />
               </ErrorBoundary>
             </Suspense>
           </Stage>
