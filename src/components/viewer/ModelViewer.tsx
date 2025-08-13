@@ -10,7 +10,7 @@ import {
   useBounds,
 } from "@react-three/drei";
 import * as React from "react";
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 // Relax types when local env lacks @types/three
 type GLTFResult = { scene: object };
 function GLB({ src }: { src: string }) {
@@ -80,8 +80,14 @@ export default function ModelViewer({
   title?: string;
   background?: ViewerBackground;
 }) {
-  const [envPreset, setEnvPreset] = React.useState<"studio" | "city" | "sunset" | "forest" | undefined>(
-    background === "studio" ? "studio" : background === "outdoor" ? "city" : undefined,
+  const [envPreset, setEnvPreset] = React.useState<
+    "studio" | "city" | "sunset" | "forest" | undefined
+  >(
+    background === "studio"
+      ? "studio"
+      : background === "outdoor"
+        ? "city"
+        : undefined,
   );
   const [autoRotate, setAutoRotate] = React.useState(true);
   const [reloadKey, setReloadKey] = React.useState(0);
@@ -101,7 +107,10 @@ export default function ModelViewer({
         <div className="flex h-full w-full items-center justify-center bg-black/50">
           <div className="w-56 rounded-md bg-black/80 p-4 text-white">
             <div className="h-2 w-full rounded bg-white/20">
-              <div className="h-2 rounded bg-white" style={{ width: `${pct}%` }} />
+              <div
+                className="h-2 rounded bg-white"
+                style={{ width: `${pct}%` }}
+              />
             </div>
             <div className="mt-2 text-center text-xs">Loading {pct}%</div>
           </div>
@@ -113,7 +122,7 @@ export default function ModelViewer({
   function Toolbar({ onFit }: { onFit: () => void }) {
     return (
       <Html position={[0, 0, 0]} fullscreen>
-        <div className="pointer-events-auto absolute right-3 top-3 flex gap-2">
+        <div className="pointer-events-auto absolute top-3 right-3 flex gap-2">
           <button
             className="rounded bg-white/90 px-2 py-1 text-xs text-black"
             onClick={onFit}
@@ -131,7 +140,13 @@ export default function ModelViewer({
           <select
             className="rounded bg-white/90 px-2 py-1 text-xs text-black"
             value={envPreset ?? "none"}
-            onChange={(e) => setEnvPreset(e.target.value === "none" ? undefined : (e.target.value as typeof envPreset))}
+            onChange={(e) =>
+              setEnvPreset(
+                e.target.value === "none"
+                  ? undefined
+                  : (e.target.value as typeof envPreset),
+              )
+            }
             title="Environment"
           >
             <option value="none">Env: none</option>
@@ -157,10 +172,25 @@ export default function ModelViewer({
     return <Toolbar onFit={() => api.refresh().fit()} />;
   }
 
+  function AutoFit({ deps }: { deps: React.DependencyList }) {
+    const api = useBounds();
+    useEffect(() => {
+      // Defer one tick to ensure geometry is ready
+      const t = setTimeout(() => api.refresh().fit(), 0);
+      return () => clearTimeout(t);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, deps);
+    return null;
+  }
+
   return (
     <div className="space-y-2">
       <div className="h-[420px] rounded-lg">
-        <Canvas camera={{ position: [2.2, 1.2, 2.2], fov: 50 }} dpr={[1, 2]} shadows>
+        <Canvas
+          camera={{ position: [2.2, 1.2, 2.2], fov: 50 }}
+          dpr={[1, 2]}
+          shadows
+        >
           {background !== "transparent" && (
             <color attach="background" args={[bgColor!]} />
           )}
@@ -169,6 +199,7 @@ export default function ModelViewer({
             <Suspense fallback={<LoaderBar />}>
               <ErrorBoundary onRetry={() => setReloadKey((k) => k + 1)}>
                 <Bounds fit clip observe margin={1.1}>
+                  <AutoFit deps={[src, reloadKey]} />
                   <group key={reloadKey}>
                     <GLB src={src} />
                   </group>
@@ -178,6 +209,7 @@ export default function ModelViewer({
             </Suspense>
           </Stage>
           <OrbitControls
+            makeDefault
             enablePan={false}
             enableDamping
             dampingFactor={0.05}
@@ -218,13 +250,19 @@ export default function ModelViewer({
             </a>
           );
         })()}
-        <a
-          href={`/vr360.html?src=${encodeURIComponent(src)}`}
-          target="_blank"
-          className="rounded-md bg-white px-3 py-1 text-sm text-black"
-        >
-          View in VR
-        </a>
+        {(() => {
+          const needsProxy = /^https?:\/\/t3rgh6yjwx\.ufs\.sh\//.test(src);
+          const vrSrc = needsProxy ? `/api/models/proxy?url=${encodeURIComponent(src)}` : src;
+          return (
+            <a
+              href={`/vr360.html?src=${encodeURIComponent(vrSrc)}`}
+              target="_blank"
+              className="rounded-md bg-white px-3 py-1 text-sm text-black"
+            >
+              View in VR
+            </a>
+          );
+        })()}
       </div>
     </div>
   );
