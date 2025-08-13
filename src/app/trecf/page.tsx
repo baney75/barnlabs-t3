@@ -7,7 +7,7 @@ export const dynamic = "force-static";
 export const metadata: Metadata = {
   title: "Tom Ridge Environmental Center | BarnLabs",
   description:
-    "Experience the S.S. Dean Richmond in AR/VR at the Tom Ridge Environmental Center, Presque Isle State Park, Erie PA.",
+    "Experience Dean Richmond in AR/VR at the Tom Ridge Environmental Center, Presque Isle State Park, Erie PA.",
 };
 
 export default function TrecfPage() {
@@ -57,7 +57,7 @@ export default function TrecfPage() {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           <div>
             <h2 className="mb-3 [font-family:var(--font-display)] text-2xl">
-              Featured 3D Model: SS Dean Richmond
+              Featured 3D Model: Dean Richmond
             </h2>
             <ModelViewer
               src="https://t3rgh6yjwx.ufs.sh/f/DGcq4LQh6E89Co1yGNeldY0T6O4ZvbiLtsrpqA9PuzUwVMmx"
@@ -65,7 +65,7 @@ export default function TrecfPage() {
               background="studio"
             />
             <p className="mt-2 text-sm opacity-80">
-              SS Dean Richmond was a 238–239 ft wooden propeller steamer (built
+              Dean Richmond was a 238–239 ft wooden propeller steamer (built
               1864) that foundered in an 1893 Lake Erie storm; 20 lives were
               lost. See details at the Regional Science Consortium:{" "}
               <a

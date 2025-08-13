@@ -46,19 +46,19 @@ export default async function Home({
             <div className="mt-3 flex flex-wrap gap-2">
               <a
                 rel="ar"
-                href="https://t3rgh6yjwx.ufs.sh/f/DGcq4LQh6E8984sWY0j2OeZAmXnfBGRoxasdK51iUqFvSJLI"
+                href="https://t3rgh6yjwx.ufs.sh/f/DGcq4LQh6E89GCtAu79ZUuW0bRyfpglOjQD1VBXNL7qIG8ik"
                 className="rounded-md bg-white px-3 py-1 text-sm text-black"
               >
                 View in AR (iOS)
               </a>
               <a
-                href={`intent://arvr.google.com/scene-viewer/1.0?file=${encodeURIComponent("https://t3rgh6yjwx.ufs.sh/f/DGcq4LQh6E89nUUTez3rgOax2BzGHqujDRtWQswvYCIVlfkK")}#Intent;scheme=https;package=com.google.android.googlequicksearchbox;action=android.intent.action.VIEW;S.browser_fallback_url=${encodeURIComponent("https://t3rgh6yjwx.ufs.sh/f/DGcq4LQh6E89nUUTez3rgOax2BzGHqujDRtWQswvYCIVlfkK")};end;`}
+                href={`intent://arvr.google.com/scene-viewer/1.0?file=${encodeURIComponent("https://t3rgh6yjwx.ufs.sh/f/DGcq4LQh6E89kENSLW7vf8xODEsZWtuNTX27M3iVwYrCSFeo")}#Intent;scheme=https;package=com.google.android.googlequicksearchbox;action=android.intent.action.VIEW;S.browser_fallback_url=${encodeURIComponent("https://t3rgh6yjwx.ufs.sh/f/DGcq4LQh6E89nUUTez3rgOax2BzGHqujDRtWQswvYCIVlfkK")};end;`}
                 className="rounded-md bg-white px-3 py-1 text-sm text-black"
               >
                 View in AR (Android)
               </a>
               <a
-                href={`/vr360.html?src=${encodeURIComponent("/api/models/proxy?url=https://t3rgh6yjwx.ufs.sh/f/DGcq4LQh6E89nUUTez3rgOax2BzGHqujDRtWQswvYCIVlfkK")}`}
+                href={`/vr360.html?src=${encodeURIComponent("/api/models/proxy?url=https://t3rgh6yjwx.ufs.sh/f/DGcq4LQh6E89kENSLW7vf8xODEsZWtuNTX27M3iVwYrCSFeo")}`}
                 target="_blank"
                 className="rounded-md bg-white px-3 py-1 text-sm text-black"
               >
