@@ -58,7 +58,11 @@
 
     <script>
       const p = new URLSearchParams(location.search);
-      const model = (p.get("src") || p.get("model"));
+      let model = (p.get("src") || p.get("model"));
+      // If proxied URL param is double-encoded, decode once
+      try {
+        if (model && model.includes("%2F")) model = decodeURIComponent(model);
+      } catch {}
 
       (function init() {
         if (!model) return;
@@ -72,7 +76,7 @@
                 <a-asset-item id="asset" src="${model}"></a-asset-item>
               </a-assets>
               <a-entity position="0 1.6 0">
-                <a-entity gltf-model="#asset" position="0 0 -2" rotation="0 45 0" shadow="cast: true; receive: true" animation="property: rotation; to: 0 405 0; loop: true; dur: 15000; easing: linear"></a-entity>
+                <a-entity gltf-model="#asset" position="0 -0.6 -1.2" scale="1.2 1.2 1.2" rotation="0 30 0" shadow="cast: true; receive: true" animation="property: rotation; to: 0 390 0; loop: true; dur: 18000; easing: linear"></a-entity>
               </a-entity>
               <!-- Mobile-friendly reticle (gaze cursor) for headset cases -->
               <a-entity cursor="fuse: true; fuseTimeout: 1000" position="0 0 -1" geometry="primitive: ring; radiusInner: 0.01; radiusOuter: 0.015" material="color: #fff; shader: flat"></a-entity>
