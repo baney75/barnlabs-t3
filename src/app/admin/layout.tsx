@@ -1,13 +1,13 @@
 import Link from "next/link";
 import AdminGuard from "~/app/admin/_components/AdminGuard";
-import { api } from "~/trpc/server";
+import { getRequiredRole } from "~/server/auth";
 
 export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  await api.auth.ensureAdminBootstrap();
+  await getRequiredRole("ADMIN");
   return (
     <AdminGuard>
       <div className="bg-background text-foreground min-h-screen">

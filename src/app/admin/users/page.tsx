@@ -22,7 +22,7 @@ export default async function AdminUsersPage() {
                 id: string;
                 name: string | null;
                 email: string | null;
-                role: "USER" | "ADMIN";
+                role: "USER" | "EMPLOYEE" | "ADMIN";
               }) => (
                 <tr key={u.id} className="border-t">
                   <td className="p-2">{u.name}</td>
