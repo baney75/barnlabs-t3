@@ -8,7 +8,7 @@ export default function EarthModel(
   props: React.JSX.IntrinsicElements["group"],
 ) {
   const group = useRef<Group>(null);
-  const gltf = useGLTF("/Earth_Model.glb?v=1");
+  const gltf = useGLTF("/dean_richmond.glb?v=1");
   useFrame((_, delta) => {
     if (group.current) group.current.rotation.y += delta * 0.2;
   });
@@ -20,4 +20,4 @@ export default function EarthModel(
   );
 }
 
-useGLTF.preload("/Earth_Model.glb?v=1");
+useGLTF.preload("/dean_richmond.glb?v=1");
