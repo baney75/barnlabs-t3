@@ -60,9 +60,9 @@ export default function TrecfPage() {
             <div className="mt-4 rounded-md bg-[color:var(--color-goals-bg)] p-4 text-[color:var(--color-header-text)]">
               <div className="font-semibold">AR/VR Tips</div>
               <ul className="list-disc pl-6 text-sm opacity-90">
-                <li>iOS: Tap "View in AR" to launch USDZ in Quick Look.</li>
-                <li>Android: Tap "View in AR" to launch Scene Viewer.</li>
-                <li>VR: Tap "View in VR" then the headset icon. Use a mobile headset case for best experience.</li>
+                <li>iOS: Tap &quot;View in AR&quot; to launch USDZ in Quick Look.</li>
+                <li>Android: Tap &quot;View in AR&quot; to launch Scene Viewer.</li>
+                <li>VR: Tap &quot;View in VR&quot; then the headset icon. Use a mobile headset case for best experience.</li>
               </ul>
             </div>
           </div>
@@ -70,7 +70,7 @@ export default function TrecfPage() {
             <h2 className="[font-family:var(--font-display)] text-2xl">About TREC</h2>
             <p className="opacity-90">
               The Tom Ridge Environmental Center (TREC) is dedicated to the 3,200 acres of Presque Isle, combining research,
-              education, and visitor services in one destination. Explore exhibits, climb the 75' glass tower, and learn how to keep Presque Isle pristine.
+              education, and visitor services in one destination. Explore exhibits, climb the 75&apos; glass tower, and learn how to keep Presque Isle pristine.
             </p>
             <div className="grid grid-cols-2 gap-3">
               <img alt="TREC exterior" src="https://upload.wikimedia.org/wikipedia/commons/1/1e/Tom_Ridge_Environmental_Center.jpg" className="h-40 w-full rounded-md object-cover" />

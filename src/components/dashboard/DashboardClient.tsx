@@ -1,7 +1,10 @@
 "use client";
 /* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-explicit-any */
 import { useState, useMemo } from "react";
-import dynamic from "next/dynamic";
+import {
+  Responsive as RGLResponsive,
+  WidthProvider as rglWidthProvider,
+} from "react-grid-layout";
 // Suppress type friction for React 19
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -14,14 +17,25 @@ import { Input } from "~/components/ui/input";
 import { Textarea } from "~/components/ui/textarea";
 import { api } from "~/trpc/react";
 
-const ResponsiveGridLayout = dynamic(
-  async () => (await import("react-grid-layout")).Responsive,
-  { ssr: false },
-);
-const WidthProvider = dynamic(
-  async () => (await import("react-grid-layout")).WidthProvider,
-  { ssr: false },
-);
+const ResponsiveGridLayout =
+  RGLResponsive as unknown as React.ComponentType<any>;
+const WidthProvider = rglWidthProvider as unknown as <P>(
+  component: React.ComponentType<P>,
+) => React.ComponentType<
+  P & {
+    measureBeforeMount?: boolean;
+    margin?: [number, number];
+    containerPadding?: [number, number];
+    cols?: Record<string, number>;
+    rowHeight?: number;
+    onBreakpointChange?: (newBreakpoint: string, newCols: number) => void;
+    onWidthChange?: (
+      containerWidth: number,
+      margin: [number, number],
+      cols: number,
+    ) => void;
+  }
+>;
 
 interface LayoutItem {
   i: string;
@@ -75,7 +89,7 @@ export default function DashboardClient({
     <div className="space-y-4">
       <div className="flex items-center gap-3">
         <Button
-          onClick={() => save.mutate({ content })}
+          onClick={() => save.mutate({ content: content as unknown as any })}
           disabled={save.isPending}
         >
           {save.isPending ? "Saving..." : "Save"}
@@ -137,7 +151,7 @@ export default function DashboardClient({
                 {card.type === "markdown" && (
                   <div className="grid gap-2 md:grid-cols-2">
                     <Textarea
-                      defaultValue={card.data?.md as string ?? ""}
+                      defaultValue={(card.data?.md as string) ?? ""}
                       onChange={(e) => {
                         const md = e.target.value;
                         setContent((prev) => ({
@@ -155,7 +169,7 @@ export default function DashboardClient({
                         remarkPlugins={[remarkGfm]}
                         rehypePlugins={[rehypeSanitize]}
                       >
-                        {card.data?.md as string ?? ""}
+                        {(card.data?.md as string) ?? ""}
                       </ReactMarkdown>
                     </div>
                   </div>

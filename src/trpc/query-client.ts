@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access */
 import {
   defaultShouldDehydrateQuery,
   QueryClient,
@@ -15,9 +14,13 @@ export const createQueryClient = () =>
       },
       dehydrate: {
         serializeData: SuperJSON.serialize,
-        shouldDehydrateQuery: (query: Query) =>
-          defaultShouldDehydrateQuery(query) ||
-          query.state.status === "pending",
+        shouldDehydrateQuery: (query: unknown) => {
+          const q = query as { state?: { status?: string } };
+          return (
+            defaultShouldDehydrateQuery(query as any) ||
+            q.state?.status === "pending"
+          );
+        },
       },
       hydrate: {
         deserializeData: SuperJSON.deserialize,
