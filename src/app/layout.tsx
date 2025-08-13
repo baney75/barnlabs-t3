@@ -4,6 +4,7 @@ import { type Metadata } from "next";
 // Using self-hosted fonts via @fontsource in globals.css
 
 import { TRPCReactProvider } from "~/trpc/react";
+import AuthProvider from "~/app/_components/AuthProvider";
 
 export const metadata: Metadata = {
   title: "BarnLabs",
@@ -17,7 +18,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <TRPCReactProvider>{children}</TRPCReactProvider>
+        <AuthProvider>
+          <TRPCReactProvider>{children}</TRPCReactProvider>
+        </AuthProvider>
       </body>
     </html>
   );

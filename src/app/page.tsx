@@ -3,8 +3,7 @@ import { Suspense } from "react";
 import NavBar from "~/components/NavBar";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Stage } from "@react-three/drei";
-import dynamic from "next/dynamic";
-const EarthModel = dynamic(() => import("~/components/viewer/EarthModel"), { ssr: false });
+import HeroCanvas from "~/components/hero/HeroCanvas";
 
 import { LatestPost } from "~/app/_components/post";
 import { auth } from "~/server/auth";
@@ -47,22 +46,7 @@ export default async function Home() {
             </div>
           </div>
           <div className="h-[360px] rounded-lg bg-black/20">
-            <Suspense
-              fallback={
-                <div className="flex h-full items-center justify-center">
-                  Loading...
-                </div>
-              }
-            >
-              <Canvas camera={{ position: [2.2, 1.2, 2.2], fov: 50 }}>
-                <color attach="background" args={["#000000"]} />
-                <ambientLight intensity={1.2} />
-                <Stage intensity={0.3}>
-                  <EarthModel />
-                </Stage>
-                <OrbitControls enablePan={false} />
-              </Canvas>
-            </Suspense>
+            <HeroCanvas />
           </div>
         </section>
 
