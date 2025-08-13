@@ -9,7 +9,9 @@ export default async function SharePage({
   params: Promise<{ id: string }>;
 }) {
   const resolvedParams = await params;
-  const share = await api.share.get({ id: resolvedParams.id }).catch(() => null);
+  const share = await api.share
+    .get({ id: resolvedParams.id })
+    .catch(() => null);
   if (!share) return notFound();
   const modelUrl = share.model?.glbStorageId
     ? `/api/models/${share.model.glbStorageId}`
@@ -30,7 +32,7 @@ export default async function SharePage({
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-[1fr_280px]">
           <ModelViewer src={modelUrl} usdz={usdzUrl} title={share.title} />
-          <SharePageClient 
+          <SharePageClient
             shareUrl={`${process.env.PUB_URL ?? "http://localhost:3000"}/s/${resolvedParams.id}`}
           />
         </div>

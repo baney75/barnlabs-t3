@@ -1,9 +1,20 @@
 import { z } from "zod";
-import { createTRPCRouter, protectedProcedure, publicProcedure } from "~/server/api/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "~/server/api/trpc";
 
 export const shareRouter = createTRPCRouter({
   create: protectedProcedure
-    .input(z.object({ title: z.string().min(1), description: z.string().optional(), modelId: z.string().cuid().optional(), modelUrl: z.string().url().optional() }))
+    .input(
+      z.object({
+        title: z.string().min(1),
+        description: z.string().optional(),
+        modelId: z.string().cuid().optional(),
+        modelUrl: z.string().url().optional(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       return ctx.db.share.create({
         data: {
@@ -19,8 +30,9 @@ export const shareRouter = createTRPCRouter({
   get: publicProcedure
     .input(z.object({ id: z.string().cuid() }))
     .query(async ({ ctx, input }) => {
-      return ctx.db.share.findUnique({ where: { id: input.id }, include: { model: true, owner: true } });
+      return ctx.db.share.findUnique({
+        where: { id: input.id },
+        include: { model: true, owner: true },
+      });
     }),
 });
-
-

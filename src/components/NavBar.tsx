@@ -23,12 +23,8 @@ export default function NavBar() {
           <Link href="#contact" className="hidden md:inline">
             Contact
           </Link>
-          {session?.user && (
-            <Link href="/dashboard">Dashboard</Link>
-          )}
-          {isAdmin && (
-            <Link href="/admin">Admin</Link>
-          )}
+          {session?.user && <Link href="/dashboard">Dashboard</Link>}
+          {isAdmin && <Link href="/admin">Admin</Link>}
           {!session?.user ? (
             <Link href="/auth/signin" className="underline">
               Sign in
