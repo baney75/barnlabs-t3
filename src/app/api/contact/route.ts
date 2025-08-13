@@ -14,5 +14,3 @@ export async function POST(request: Request) {
   });
   return NextResponse.json(await res.json(), { status: res.status });
 }
-
-

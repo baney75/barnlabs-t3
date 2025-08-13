@@ -11,6 +11,12 @@ importers:
       '@auth/prisma-adapter':
         specifier: ^2.7.2
         version: 2.10.0(@prisma/client@6.14.0(prisma@6.14.0(typescript@5.9.2))(typescript@5.9.2))
+      '@fontsource/galdeano':
+        specifier: ^5.2.6
+        version: 5.2.6
+      '@fontsource/milonga':
+        specifier: ^5.2.6
+        version: 5.2.6
       '@prisma/client':
         specifier: ^6.5.0
         version: 6.14.0(prisma@6.14.0(typescript@5.9.2))(typescript@5.9.2)
@@ -385,6 +391,12 @@ packages:
   '@eslint/plugin-kit@0.3.5':
     resolution: {integrity: sha512-Z5kJ+wU3oA7MMIqVR9tyZRtjYPr4OC004Q4Rw7pgOKUOKkJfZ3O24nz3WYfGRpMDNmcOi3TwQOmgm7B7Tpii0w==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
+  '@fontsource/galdeano@5.2.6':
+    resolution: {integrity: sha512-AMX+PoRgL4jSIthX5+6FH0v+08tPdgow+hHcOf2YB/XIcejBMA3gTzFCfFhpkao3hK4pc/ByD0wOL6ICN0tCZQ==}
+
+  '@fontsource/milonga@5.2.6':
+    resolution: {integrity: sha512-zR96BMuB2B+WGaD5wpXvH3ozOsfLcQrkO3qvKKQPBUpcD2yirlT9+PzQjR+Sn8aL8EI4i9DKULGw1FqV+cFFCg==}
 
   '@humanfs/core@0.19.1':
     resolution: {integrity: sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA==}
@@ -2950,6 +2962,10 @@ snapshots:
     dependencies:
       '@eslint/core': 0.15.2
       levn: 0.4.1
+
+  '@fontsource/galdeano@5.2.6': {}
+
+  '@fontsource/milonga@5.2.6': {}
 
   '@humanfs/core@0.19.1': {}
 

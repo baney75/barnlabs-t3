@@ -1,7 +1,7 @@
 import "~/styles/globals.css";
 
 import { type Metadata } from "next";
-import { Galdeano, Milonga } from "next/font/google";
+// Using self-hosted fonts via @fontsource in globals.css
 
 import { TRPCReactProvider } from "~/trpc/react";
 
@@ -11,23 +11,12 @@ export const metadata: Metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
-const galdeano = Galdeano({
-  weight: "400",
-  subsets: ["latin"],
-  variable: "--font-galdeano",
-});
-
-const milonga = Milonga({
-  weight: "400",
-  subsets: ["latin"],
-  variable: "--font-milonga",
-});
 
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${galdeano.variable} ${milonga.variable}`}>
+    <html lang="en">
       <body>
         <TRPCReactProvider>{children}</TRPCReactProvider>
       </body>

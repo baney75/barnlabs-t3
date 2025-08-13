@@ -26,7 +26,9 @@ export default async function Home() {
         {/* Header */}
         <header className="w-full border-b border-white/10 bg-[color:var(--color-header-bg)] text-[color:var(--color-header-text)]">
           <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
-            <div className="text-2xl font-bold [font-family:var(--font-display)]">BarnLabs</div>
+            <div className="[font-family:var(--font-display)] text-2xl font-bold">
+              BarnLabs
+            </div>
             <nav className="space-x-6 text-sm">
               <a href="#features">Features</a>
               <a href="#contact">Contact</a>
@@ -37,7 +39,7 @@ export default async function Home() {
         {/* Hero */}
         <section className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-4 py-12 md:grid-cols-2 md:items-center">
           <div className="space-y-6">
-            <h1 className="text-4xl md:text-5xl [font-family:var(--font-display)]">
+            <h1 className="[font-family:var(--font-display)] text-4xl md:text-5xl">
               Unlock Deeper Understanding Through Immersive Learning
             </h1>
             <p className="opacity-90">{hello?.greeting}</p>
@@ -52,7 +54,13 @@ export default async function Home() {
             </div>
           </div>
           <div className="h-[360px] rounded-lg bg-black/20">
-            <Suspense fallback={<div className="flex h-full items-center justify-center">Loading...</div>}>
+            <Suspense
+              fallback={
+                <div className="flex h-full items-center justify-center">
+                  Loading...
+                </div>
+              }
+            >
               <Canvas camera={{ position: [2.2, 1.2, 2.2], fov: 50 }}>
                 <color attach="background" args={["#000000"]} />
                 <ambientLight intensity={1.2} />
@@ -69,10 +77,29 @@ export default async function Home() {
         </section>
 
         {/* Features */}
-        <section id="features" className="bg-[color:var(--color-features-bg)] py-12 text-black">
+        <section
+          id="features"
+          className="bg-[color:var(--color-features-bg)] py-12 text-black"
+        >
           <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 px-4 md:grid-cols-3">
-            {[{ title: "Model Viewer", desc: "Render and explore 3D models on the web." }, { title: "Dashboard", desc: "Drag-and-drop cards with live markdown preview." }, { title: "Share Pages", desc: "Public pages with QR and creator branding." }].map((f) => (
-              <Card key={f.title} className="bg-[color:var(--color-feature-card-bg)] text-[color:var(--color-feature-text)]">
+            {[
+              {
+                title: "Model Viewer",
+                desc: "Render and explore 3D models on the web.",
+              },
+              {
+                title: "Dashboard",
+                desc: "Drag-and-drop cards with live markdown preview.",
+              },
+              {
+                title: "Share Pages",
+                desc: "Public pages with QR and creator branding.",
+              },
+            ].map((f) => (
+              <Card
+                key={f.title}
+                className="bg-[color:var(--color-feature-card-bg)] text-[color:var(--color-feature-text)]"
+              >
                 <CardHeader>
                   <CardTitle>{f.title}</CardTitle>
                 </CardHeader>
@@ -83,27 +110,61 @@ export default async function Home() {
         </section>
 
         {/* Contact */}
-        <section id="contact" className="bg-[color:var(--color-contact-bg)] py-12 text-[color:var(--color-contact-text)]">
+        <section
+          id="contact"
+          className="bg-[color:var(--color-contact-bg)] py-12 text-[color:var(--color-contact-text)]"
+        >
           <div className="mx-auto grid max-w-3xl grid-cols-1 gap-6 px-4 md:grid-cols-2">
             <div>
-              <h2 className="mb-4 text-2xl [font-family:var(--font-display)]">Contact Us</h2>
-              <p className="opacity-90">Have a project or a question? Send us a message.</p>
+              <h2 className="mb-4 [font-family:var(--font-display)] text-2xl">
+                Contact Us
+              </h2>
+              <p className="opacity-90">
+                Have a project or a question? Send us a message.
+              </p>
             </div>
-            <form action="/api/contact" method="post" className="space-y-3 rounded-md bg-[color:var(--color-contact-form-bg)] p-4">
+            <form
+              action="/api/contact"
+              method="post"
+              className="space-y-3 rounded-md bg-[color:var(--color-contact-form-bg)] p-4"
+            >
               <div className="space-y-1">
                 <Label htmlFor="name">Name</Label>
-                <Input id="name" name="name" required className="text-[color:var(--color-contact-input-text)]" />
+                <Input
+                  id="name"
+                  name="name"
+                  required
+                  className="text-[color:var(--color-contact-input-text)]"
+                />
               </div>
               <div className="space-y-1">
                 <Label htmlFor="email">Email</Label>
-                <Input id="email" type="email" name="email" required className="text-[color:var(--color-contact-input-text)]" />
+                <Input
+                  id="email"
+                  type="email"
+                  name="email"
+                  required
+                  className="text-[color:var(--color-contact-input-text)]"
+                />
               </div>
               <div className="space-y-1">
                 <Label htmlFor="message">Message</Label>
-                <Textarea id="message" name="message" rows={4} required className="text-[color:var(--color-contact-input-text)]" />
+                <Textarea
+                  id="message"
+                  name="message"
+                  rows={4}
+                  required
+                  className="text-[color:var(--color-contact-input-text)]"
+                />
               </div>
-              <input type="hidden" name="access_key" value="f73f7250-5451-499f-8e96-5669baece62c" />
-              <Button className="bg-[color:var(--color-contact-button-bg)] text-black">Send</Button>
+              <input
+                type="hidden"
+                name="access_key"
+                value="f73f7250-5451-499f-8e96-5669baece62c"
+              />
+              <Button className="bg-[color:var(--color-contact-button-bg)] text-black">
+                Send
+              </Button>
             </form>
           </div>
         </section>

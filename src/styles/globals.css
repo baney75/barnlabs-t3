@@ -1,12 +1,14 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "@fontsource/galdeano/400.css";
+@import "@fontsource/milonga/400.css";
 
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --font-sans: var(--font-galdeano), ui-sans-serif, system-ui, sans-serif,
+  --font-sans: 'Galdeano', ui-sans-serif, system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --font-display: var(--font-milonga), var(--font-galdeano), ui-serif, serif;
+  --font-display: 'Milonga', 'Galdeano', ui-serif, serif;
 }
 
 @theme inline {
