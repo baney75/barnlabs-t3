@@ -1,7 +1,11 @@
 import { randomBytes } from "crypto";
 import { hash } from "bcryptjs";
 import { z } from "zod";
-import { createTRPCRouter, publicProcedure, protectedProcedure } from "~/server/api/trpc";
+import {
+  createTRPCRouter,
+  publicProcedure,
+  protectedProcedure,
+} from "~/server/api/trpc";
 import { env } from "~/env";
 import { sendPasswordResetEmail } from "~/server/email/resend";
 
@@ -11,7 +15,9 @@ export const authRouter = createTRPCRouter({
   requestPasswordReset: publicProcedure
     .input(z.object({ email: z.string().email() }))
     .mutation(async ({ ctx, input }) => {
-      const user = await ctx.db.user.findUnique({ where: { email: input.email } });
+      const user = await ctx.db.user.findUnique({
+        where: { email: input.email },
+      });
       // Avoid leaking whether a user exists
       if (!user?.id) return { ok: true };
 
@@ -56,5 +62,3 @@ export const authRouter = createTRPCRouter({
       return { ok: true };
     }),
 });
-
-
