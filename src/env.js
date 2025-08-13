@@ -11,9 +11,24 @@ export const env = createEnv({
       process.env.NODE_ENV === "production"
         ? z.string()
         : z.string().optional(),
-    AUTH_DISCORD_ID: z.string(),
-    AUTH_DISCORD_SECRET: z.string(),
     DATABASE_URL: z.string().url(),
+    // OAuth (Google)
+    GOOGLE_CLIENT_ID:
+      process.env.NODE_ENV === "production"
+        ? z.string()
+        : z.string().optional(),
+    GOOGLE_CLIENT_SECRET:
+      process.env.NODE_ENV === "production"
+        ? z.string()
+        : z.string().optional(),
+    // Email
+    RESEND_API_KEY: z.string().optional(),
+    RESEND_FROM_EMAIL: z.string().optional(),
+    // Uploads (UploadThing)
+    UPLOADTHING_TOKEN: z.string().optional(),
+    // URLs
+    PUB_URL: z.string().optional(),
+    AUTH_URL: z.string().optional(),
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
@@ -34,9 +49,14 @@ export const env = createEnv({
    */
   runtimeEnv: {
     AUTH_SECRET: process.env.AUTH_SECRET,
-    AUTH_DISCORD_ID: process.env.AUTH_DISCORD_ID,
-    AUTH_DISCORD_SECRET: process.env.AUTH_DISCORD_SECRET,
     DATABASE_URL: process.env.DATABASE_URL,
+    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+    GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+    RESEND_API_KEY: process.env.RESEND_API_KEY,
+    RESEND_FROM_EMAIL: process.env.RESEND_FROM_EMAIL,
+    UPLOADTHING_TOKEN: process.env.UPLOADTHING_TOKEN,
+    PUB_URL: process.env.PUB_URL,
+    AUTH_URL: process.env.AUTH_URL,
     NODE_ENV: process.env.NODE_ENV,
   },
   /**
